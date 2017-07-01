@@ -35,13 +35,13 @@ public class CommentTO extends BaseTO {
     /**
      * 经纬X坐标
      */
-    @NotNull(message = "请填写经纬X坐标", groups = {ADD.class, EDIT.class})
-    private Double pointX;
+    @NotBlank(message = "请填写经纬X坐标", groups = {ADD.class, EDIT.class})
+    private String pointX;
     /**
      * 经纬Y坐标
      */
-    @NotNull(message = "请填写经纬Y坐标", groups = {ADD.class, EDIT.class})
-    private Double pointY;
+    @NotBlank(message = "请填写经纬Y坐标", groups = {ADD.class, EDIT.class})
+    private String pointY;
     /**
      * 店铺名
      */
@@ -78,19 +78,19 @@ public class CommentTO extends BaseTO {
         this.scoreType = scoreType;
     }
 
-    public Double getPointX() {
+    public String getPointX() {
         return pointX;
     }
 
-    public void setPointX(Double pointX) {
+    public void setPointX(String pointX) {
         this.pointX = pointX;
     }
 
-    public Double getPointY() {
+    public String getPointY() {
         return pointY;
     }
 
-    public void setPointY(Double pointY) {
+    public void setPointY(String pointY) {
         this.pointY = pointY;
     }
 

@@ -14,6 +14,7 @@ import com.bjike.ser.comment.ICommentSer;
 import com.bjike.to.comment.CommentTO;
 import com.bjike.vo.comment.CommentDetailsVO;
 import com.bjike.vo.comment.CommentVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +50,9 @@ public class CommentAct {
     @PostMapping("/add")
     public Result add(@Validated(ADD.class) CommentTO to, BindingResult result,HttpServletRequest request) throws ActException {
         try {
+            if(StringUtils.isBlank(to.getUserId())){
+                to.setUserId(request.getHeader("userId"));
+            }
             List<File> files = FileUtil.save(request,"/comment/"+ DateUtil.dateToString(LocalDate.now()));
             Comment comment = commentSer.add(to,files);
             CommentVO  vo = BeanCopy.copyProperties(comment,CommentVO.class);

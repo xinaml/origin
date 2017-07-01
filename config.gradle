@@ -1,6 +1,7 @@
 allprojects {
 
     ext {
+        junit_version = '4.12'
         spring_boot_version = '1.5.4.RELEASE'
         spring_boot_starter_web_version = '1.4.0.RELEASE'
         spring_boot_starter_jdbc_version = '1.4.0.RELEASE'

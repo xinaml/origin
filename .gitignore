@@ -5,7 +5,6 @@
 **/classes/
 **/gradle/
 **/project/
-**/.sass-cache/
 **/.idea/
 **/*.iml
 settings.gradle
@@ -14,6 +13,5 @@ settings.gradle
 **/gradlew
 **/gradlew.bat
 **/bower_components
-**/rebel.xml
 **/src/main/webapp/public/js/lib/**
 **/*.xml.bak

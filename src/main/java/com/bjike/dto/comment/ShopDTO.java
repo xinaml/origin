@@ -10,22 +10,22 @@ import com.bjike.dto.BaseDTO;
  * @Copy: [com.bjike]
  */
 public class ShopDTO extends BaseDTO{
-    private Double pointX;
-    private Double pointY;
+    private String pointX;
+    private String pointY;
 
-    public Double getPointX() {
+    public String getPointX() {
         return pointX;
     }
 
-    public void setPointX(Double pointX) {
+    public void setPointX(String pointX) {
         this.pointX = pointX;
     }
 
-    public Double getPointY() {
+    public String getPointY() {
         return pointY;
     }
 
-    public void setPointY(Double pointY) {
+    public void setPointY(String pointY) {
         this.pointY = pointY;
     }
 }

@@ -52,6 +52,10 @@ configure(install.repositories.mavenInstaller) {
 }
 
 dependencies {
+//    test
+    testCompile group: 'junit', name: 'junit', version: "$junit_version"
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$spring_boot_starter_web_version"
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "$spring_boot_starter_jdbc_version"
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$spring_boot_starter_data_jpa"
@@ -72,6 +76,8 @@ dependencies {
 // poi
     compile group: 'org.apache.poi', name: 'poi', version: "$poi_version"
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: "$poi_version"
+
+
 
 
 }

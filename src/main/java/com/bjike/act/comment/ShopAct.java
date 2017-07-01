@@ -1,23 +1,14 @@
 package com.bjike.act.comment;
 
-import com.bjike.common.aspect.ADD;
-import com.bjike.common.aspect.EDIT;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.common.util.NumberUtil;
-import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.ShopDTO;
-import com.bjike.entity.comment.Shop;
 import com.bjike.ser.comment.IShopSer;
-import com.bjike.to.comment.ShopTO;
-import com.bjike.vo.comment.ShopVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -44,8 +35,8 @@ public class ShopAct {
     @GetMapping("/nearby")
     public Result nearby(ShopDTO dto) throws ActException {
         try {
-            dto.getConditions().add(Restrict.lt("pointX", new double[]{dto.getPointX()-10,dto.getPointX()+10}));
-            dto.getConditions().add(Restrict.eq("pointY", new double[]{dto.getPointY()-10,dto.getPointY()+10}));
+            dto.getConditions().add(Restrict.lt("pointX", new String[]{dto.getPointX(), dto.getPointX()}));
+            dto.getConditions().add(Restrict.eq("pointY", new String[]{dto.getPointY(), dto.getPointY()}));
             return ActResult.initialize(shopSer.findByCis(dto));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -64,8 +55,8 @@ public class ShopAct {
         try {
             shopSer.remove(id);
             return ActResult.initialize("delete success");
-        }catch (SerException e){
-            throw  new ActException(e.getMessage());
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
         }
     }
 

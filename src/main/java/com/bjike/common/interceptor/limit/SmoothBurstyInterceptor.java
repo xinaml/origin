@@ -43,7 +43,7 @@ public class SmoothBurstyInterceptor extends HandlerInterceptorAdapter {
      * @param tps       限流量 (每秒处理量)
      * @param limitType 限流类型:等待/丢弃(达到限流量)
      */
-    public SmoothBurstyInterceptor(int tps, SmoothBurstyInterceptor.LimitType limitType) {
+    public SmoothBurstyInterceptor(int tps, LimitType limitType) {
         this.limiter = RateLimiter.create(tps);
         this.limitType = limitType;
     }
@@ -51,7 +51,7 @@ public class SmoothBurstyInterceptor extends HandlerInterceptorAdapter {
      * @param permitsPerSecond  每秒新增的令牌数
      * @param limitType 限流类型:等待/丢弃(达到限流量)
      */
-    public SmoothBurstyInterceptor(double permitsPerSecond, SmoothBurstyInterceptor.LimitType limitType) {
+    public SmoothBurstyInterceptor(double permitsPerSecond, LimitType limitType) {
         this.limiter = RateLimiter.create(permitsPerSecond, 1000, TimeUnit.MILLISECONDS);
         this.limitType = limitType;
     }

@@ -25,15 +25,15 @@ public class Shop extends BaseEntity{
     /**
      * x坐标
      */
-    @Column(columnDefinition = " DECIMAL(5,2) COMMENT 'x坐标' ", nullable = false)
+    @Column(columnDefinition = " VARCHAR(100) COMMENT 'x坐标' ", nullable = false)
 
-    private Double pointX;
+    private String pointX;
     /**
      * y坐标
      */
-    @Column(columnDefinition = "DECIMAL(5,2) COMMENT 'y坐标' ", nullable = false)
+    @Column(columnDefinition = "VARCHAR(100) COMMENT 'y坐标' ", nullable = false)
 
-    private Double pointY;
+    private String pointY;
 
 
     /**
@@ -56,19 +56,19 @@ public class Shop extends BaseEntity{
         this.address = address;
     }
 
-    public Double getPointX() {
+    public String getPointX() {
         return pointX;
     }
 
-    public void setPointX(Double pointX) {
+    public void setPointX(String pointX) {
         this.pointX = pointX;
     }
 
-    public Double getPointY() {
+    public String getPointY() {
         return pointY;
     }
 
-    public void setPointY(Double pointY) {
+    public void setPointY(String pointY) {
         this.pointY = pointY;
     }
 
