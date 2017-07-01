@@ -7,9 +7,13 @@ import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.ShopDTO;
+import com.bjike.entity.comment.Shop;
 import com.bjike.ser.comment.IShopSer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: [liguiqin]
@@ -35,8 +39,8 @@ public class ShopAct {
     @GetMapping("/nearby")
     public Result nearby(ShopDTO dto) throws ActException {
         try {
-            dto.getConditions().add(Restrict.lt("pointX", new String[]{dto.getPointX(), dto.getPointX()}));
-            dto.getConditions().add(Restrict.eq("pointY", new String[]{dto.getPointY(), dto.getPointY()}));
+            dto.getConditions().add(Restrict.lt("pointX",dto.getPointX()));
+            dto.getConditions().add(Restrict.gt("pointY", dto.getPointY()));
             return ActResult.initialize(shopSer.findByCis(dto));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -46,14 +50,19 @@ public class ShopAct {
     /**
      * 店铺删除
      *
-     * @param id
+     * @param pointId
      * @return
      * @throws Exception
      */
-    @DeleteMapping("/del/{id}")
-    public Result del(@PathVariable String id) throws ActException {
+    @DeleteMapping("/del")
+    public Result del(String pointId) throws ActException {
         try {
-            shopSer.remove(id);
+            ShopDTO dto = new ShopDTO();
+            dto.getConditions().add(Restrict.eq("pointId",pointId));
+            Shop shop = shopSer.findOne(dto);
+            if (null != shop) {
+                shopSer.remove(shop);
+            }
             return ActResult.initialize("delete success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());

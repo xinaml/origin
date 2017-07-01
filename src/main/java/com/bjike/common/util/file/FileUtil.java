@@ -55,28 +55,31 @@ public class FileUtil {
     public static List<File> save(HttpServletRequest request, String path) throws SerException {
         if (StringUtils.isNotBlank(path)) {
             path = getRealPath(path);
-            List<MultipartFile> multipartFiles = getMultipartFile(request);
-            if (null != multipartFiles && multipartFiles.size() > 0) {
-                List<File> files = new ArrayList<>(multipartFiles.size());
-                for (MultipartFile mfile : multipartFiles) {
-                    File folder = new File(path);
-                    if (!folder.exists()) {// 文件夹不存在则创建
-                        folder.mkdirs();
+            if (isMultipartContent(request)) {
+                List<MultipartFile> multipartFiles = getMultipartFile(request);
+                if (null != multipartFiles && multipartFiles.size() > 0) {
+                    List<File> files = new ArrayList<>(multipartFiles.size());
+                    for (MultipartFile mfile : multipartFiles) {
+                        File folder = new File(path);
+                        if (!folder.exists()) {// 文件夹不存在则创建
+                            folder.mkdirs();
+                        }
+                        File file = new File(path + "/" + mfile.getOriginalFilename());
+                        try {
+                            mfile.transferTo(file);
+                        } catch (IOException e) {
+                        }
+                        files.add(file);
                     }
-                    File file = new File(path + "/" + mfile.getOriginalFilename());
-                    try {
-                        mfile.transferTo(file);
-                    } catch (IOException e) {
-                    }
-                    files.add(file);
+                    return files;
                 }
-                return files;
             }
+
         } else {
             throw new SerException("path存储路径不能为空");
         }
 
-        throw new SerException("没有解析到上传文件");
+        return new ArrayList<>(0);
     }
 
 

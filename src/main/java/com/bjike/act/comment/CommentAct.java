@@ -9,6 +9,7 @@ import com.bjike.common.restful.Result;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.common.util.date.DateUtil;
 import com.bjike.common.util.file.FileUtil;
+import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.comment.Comment;
 import com.bjike.ser.comment.ICommentSer;
 import com.bjike.to.comment.CommentTO;
@@ -70,10 +71,13 @@ public class CommentAct {
      * @return
      * @throws Exception
      */
-    @GetMapping("/list/{shopId}")
-    public Result list(@PathVariable String shopId) throws ActException {
+    @GetMapping("/list")
+    public Result list(CommentDTO dto,HttpServletRequest request) throws ActException {
         try {
-            List<CommentVO> vos = BeanCopy.copyProperties(commentSer.list(shopId),CommentVO.class);
+            if(StringUtils.isBlank(dto.getUserId())){
+                dto.setUserId(request.getHeader("userId"));
+            }
+            List<CommentVO> vos = BeanCopy.copyProperties(commentSer.list(dto),CommentVO.class);
             return ActResult.initialize(vos);
 
         } catch (SerException e) {
@@ -87,10 +91,10 @@ public class CommentAct {
      * @return
      * @throws Exception
      */
-    @GetMapping("/count/{shopId}")
-    public Result count(@PathVariable String shopId) throws ActException {
+    @GetMapping("/count")
+    public Result count( String pointId) throws ActException {
         try {
-            return ActResult.initialize(commentSer.count(shopId));
+            return ActResult.initialize(commentSer.count(pointId));
 
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -104,15 +108,19 @@ public class CommentAct {
      * @throws Exception
      */
     @PutMapping("/like/{commentId}")
-    public Result like(@PathVariable String commentId) throws ActException {
+    public Result like(@PathVariable String commentId,String userId,HttpServletRequest request) throws ActException {
         try {
-            commentSer.like(commentId);
+            if(StringUtils.isBlank(userId)){
+                userId = request.getHeader("userId");
+            }
+            commentSer.like(commentId,userId);
             return ActResult.initialize("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
 
     }
+
 
     /**
      * 删除点评
@@ -159,9 +167,12 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/details/{commentId}")
-    public Result details(@PathVariable String commentId) throws ActException {
+    public Result details(@PathVariable String commentId,String userId,HttpServletRequest request) throws ActException {
+        if(StringUtils.isBlank(userId)){
+            userId = request.getHeader("userId");
+        }
         try {
-           CommentDetailsVO vo =  commentSer.details(commentId);
+           CommentDetailsVO vo =  commentSer.details(commentId,userId);
             return ActResult.initialize(vo);
         } catch (SerException e) {
             throw new ActException(e.getMessage());

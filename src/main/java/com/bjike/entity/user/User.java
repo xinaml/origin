@@ -15,6 +15,7 @@ public class User extends BaseEntity{
     private String token;
     private String nickname;
     private Boolean online;
+    private String headPath;
 
     public String getTu_id() {
         return tu_id;
@@ -46,5 +47,13 @@ public class User extends BaseEntity{
 
     public void setOnline(Boolean online) {
         this.online = online;
+    }
+
+    public String getHeadPath() {
+        return headPath;
+    }
+
+    public void setHeadPath(String headPath) {
+        this.headPath = headPath;
     }
 }

@@ -25,7 +25,7 @@ public class Comment extends BaseEntity {
     /**
      * 店铺
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "shop_id", columnDefinition = "VARCHAR(36) COMMENT '店铺id' ", nullable = false)
     private Shop shop;
     /**

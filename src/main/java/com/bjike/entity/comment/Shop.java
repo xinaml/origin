@@ -15,13 +15,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "shop")
-public class Shop extends BaseEntity{
+public class Shop extends BaseEntity {
     /**
      * 地址
      */
-    @Column(columnDefinition = "VARCHAR(100) COMMENT '地址' ", nullable = false)
-
+    @Column(columnDefinition = "VARCHAR(100) COMMENT '地址' ")
     private String address;
+    /**
+     * 地点id
+     */
+    @Column(columnDefinition = " VARCHAR(100) COMMENT '地点id' ", nullable = false)
+
+    private String pointId;
     /**
      * x坐标
      */
@@ -86,5 +91,13 @@ public class Shop extends BaseEntity{
 
     public void setSeq(Integer seq) {
         this.seq = seq;
+    }
+
+    public String getPointId() {
+        return pointId;
+    }
+
+    public void setPointId(String pointId) {
+        this.pointId = pointId;
     }
 }

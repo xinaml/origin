@@ -21,6 +21,16 @@ public class CommentDetailsVO {
      */
     private String[] images;
     /**
+     * 点赞量
+     */
+    private Integer likes;
+
+    /**
+     * 已点赞
+     */
+    private boolean alreadyLikes;
+
+    /**
      * 点评内容
      */
     private String content;
@@ -31,7 +41,10 @@ public class CommentDetailsVO {
     /**
      * 点评日期
      */
-    private LocalDateTime createTime;
+    private String createTime;
+
+    private String nickname;
+    private String headPath;
 
     public String getId() {
         return id;
@@ -65,11 +78,43 @@ public class CommentDetailsVO {
         this.scoreType = scoreType;
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public boolean isAlreadyLikes() {
+        return alreadyLikes;
+    }
+
+    public void setAlreadyLikes(boolean alreadyLikes) {
+        this.alreadyLikes = alreadyLikes;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getHeadPath() {
+        return headPath;
+    }
+
+    public void setHeadPath(String headPath) {
+        this.headPath = headPath;
     }
 }

@@ -58,8 +58,8 @@ public class LoginIntercept extends HandlerInterceptorAdapter {
 
     private boolean validateLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if (StringUtils.isNotBlank(request.getParameter("token"))||
-                    StringUtils.isNotBlank(request.getHeader("token"))) {
+            if (StringUtils.isNotBlank(request.getParameter("userId"))||
+                    StringUtils.isNotBlank(request.getHeader("userId"))) {
                 return true;
             } else {
                 handlerNotHasLogin(response, "用户未登录！");

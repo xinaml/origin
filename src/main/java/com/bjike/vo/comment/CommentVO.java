@@ -3,6 +3,7 @@ package com.bjike.vo.comment;
 import com.bjike.to.BaseTO;
 import com.bjike.type.comment.ScoreType;
 import com.bjike.type.comment.VisibleType;
+import com.bjike.vo.BaseVO;
 
 /**
  * @Author: [liguiqin]
@@ -11,11 +12,15 @@ import com.bjike.type.comment.VisibleType;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class CommentVO extends BaseTO {
+public class CommentVO extends BaseVO {
     /**
      * 点评人
      */
-    private String userId;
+    private String nickname;
+    /**
+     * 点评人头像
+     */
+    private String headPath;
 
     /**
      * 点评内容
@@ -25,17 +30,25 @@ public class CommentVO extends BaseTO {
      * 评分
      */
     private ScoreType scoreType; /**
+
      * 可见范围
      */
     private VisibleType visibleType;
 
-    public String getUserId() {
-        return userId;
-    }
+    /**
+     * 点评图
+     */
+    private String[] images;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    /**
+     * 点赞数
+     */
+    private String likesCount;
+    /**
+     * 是否已赞
+     */
+    private Boolean alreadyLikes;
+
 
     public String getContent() {
         return content;
@@ -59,5 +72,45 @@ public class CommentVO extends BaseTO {
 
     public void setVisibleType(VisibleType visibleType) {
         this.visibleType = visibleType;
+    }
+
+    public String[] getImages() {
+        return images;
+    }
+
+    public void setImages(String[] images) {
+        this.images = images;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getHeadPath() {
+        return headPath;
+    }
+
+    public void setHeadPath(String headPath) {
+        this.headPath = headPath;
+    }
+
+    public String getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(String likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public Boolean getAlreadyLikes() {
+        return alreadyLikes;
+    }
+
+    public void setAlreadyLikes(Boolean alreadyLikes) {
+        this.alreadyLikes = alreadyLikes;
     }
 }

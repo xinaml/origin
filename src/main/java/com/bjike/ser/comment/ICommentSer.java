@@ -6,6 +6,7 @@ import com.bjike.entity.comment.Comment;
 import com.bjike.ser.Ser;
 import com.bjike.to.comment.CommentTO;
 import com.bjike.vo.comment.CommentDetailsVO;
+import com.bjike.vo.comment.CommentVO;
 
 import java.io.File;
 import java.util.List;
@@ -22,21 +23,21 @@ public interface ICommentSer extends Ser<Comment, CommentDTO> {
         return null;
     }
 
-    default List<Comment> list(String shopId) throws SerException {
+    default List<CommentVO> list(CommentDTO dto) throws SerException {
         return null;
     }
 
-    default Long count(String shopId) throws SerException {
+    default Long count(String pointId) throws SerException {
         return null;
     }
 
-    default void like(String commentId) throws SerException {
+    default void like(String commentId,String userId) throws SerException {
     }
 
     default void uploadImg(String commentId, List<File> files) throws SerException {
     }
 
-    default CommentDetailsVO details(String commentId) throws SerException {
+    default CommentDetailsVO details(String commentId,String userId) throws SerException {
         return null;
     }
 

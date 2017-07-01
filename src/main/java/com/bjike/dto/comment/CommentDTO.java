@@ -1,6 +1,9 @@
 package com.bjike.dto.comment;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
 import com.bjike.dto.BaseDTO;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @Author: [liguiqin]
@@ -10,4 +13,22 @@ import com.bjike.dto.BaseDTO;
  * @Copy: [com.bjike]
  */
 public class CommentDTO extends BaseDTO {
+    private String pointId;
+   private String userId;
+
+    public String getPointId() {
+        return pointId;
+    }
+
+    public void setPointId(String pointId) {
+        this.pointId = pointId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

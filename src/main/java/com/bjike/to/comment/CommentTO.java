@@ -31,6 +31,11 @@ public class CommentTO extends BaseTO {
      * 评分
      */
     private ScoreType scoreType;
+    /**
+     * 经纬X坐标
+     */
+    @NotBlank(message = "请填写地点id", groups = {ADD.class, EDIT.class})
+    private String pointId;
 
     /**
      * 经纬X坐标
@@ -47,6 +52,10 @@ public class CommentTO extends BaseTO {
      */
     @NotNull(message = "请填写店铺名", groups = {ADD.class, EDIT.class})
     private String shopName;
+    /**
+     * 详细地址
+     */
+    private String address;
 
     /**
      * 可见范围
@@ -108,5 +117,21 @@ public class CommentTO extends BaseTO {
 
     public void setVisibleType(VisibleType visibleType) {
         this.visibleType = visibleType;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPointId() {
+        return pointId;
+    }
+
+    public void setPointId(String pointId) {
+        this.pointId = pointId;
     }
 }
