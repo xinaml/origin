@@ -5,6 +5,8 @@ import com.bjike.type.comment.ScoreType;
 import com.bjike.type.comment.VisibleType;
 import com.bjike.vo.BaseVO;
 
+import java.time.LocalDateTime;
+
 /**
  * @Author: [liguiqin]
  * @Date: [2017-06-28 14:44]
@@ -48,6 +50,8 @@ public class CommentVO extends BaseVO {
      * 是否已赞
      */
     private Boolean alreadyLikes;
+
+    private LocalDateTime createTime;
 
 
     public String getContent() {
@@ -112,5 +116,13 @@ public class CommentVO extends BaseVO {
 
     public void setAlreadyLikes(Boolean alreadyLikes) {
         this.alreadyLikes = alreadyLikes;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 }

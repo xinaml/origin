@@ -3,6 +3,7 @@ package com.bjike.common.handler;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.http.ResponseContext;
 import com.bjike.common.restful.ActResult;
+import com.bjike.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,11 @@ public class ActionExceptionHandler extends AbstractHandlerExceptionResolver {
     protected ModelAndView doResolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
         ActResult actResult = new ActResult();
         httpServletResponse.setContentType(JSON_CONTEXT);
-        actResult.setMsg("服务器错误");
+        if (!StringUtil.isChinese(e.getMessage())) {
+            actResult.setMsg("服务器错误");
+        }else {
+            actResult.setMsg(e.getMessage());
+        }
         e.printStackTrace();
         if (e instanceof ActException) {
             actResult.setCode(EXCEPTION_CODE);
@@ -53,24 +58,24 @@ public class ActionExceptionHandler extends AbstractHandlerExceptionResolver {
     }
 
     private String handleJapException(Exception throwable) {
-        String str =null;
+        String str = null;
         Throwable tb = throwable.getCause();
-        if(null!=tb){
+        if (null != tb) {
             str = tb.getCause().getMessage();
             if (str.startsWith("Column")) {
                 str = str.replaceAll("Column", "列");
                 str = str.replaceAll("cannot be null", "不能为空!");
                 return str;
             }
-            if(str.startsWith("Duplicate entry")){
-                str = StringUtils.substringAfter(str,"Duplicate entry");
-                str = StringUtils.substringBefore(str,"for key");
-                return str +"已被占用!";
+            if (str.startsWith("Duplicate entry")) {
+                str = StringUtils.substringAfter(str, "Duplicate entry");
+                str = StringUtils.substringBefore(str, "for key");
+                return str + "已被占用!";
             }
-            if(str.startsWith("Data truncation")){
-                str = StringUtils.substringAfter(str,"Data too long for column");
-                str = StringUtils.substringBefore(str,"at row");
-                return str +"超出数据长度!";
+            if (str.startsWith("Data truncation")) {
+                str = StringUtils.substringAfter(str, "Data too long for column");
+                str = StringUtils.substringBefore(str, "at row");
+                return str + "超出数据长度!";
             }
         }
         return str;

@@ -37,7 +37,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ErrorRequestInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new LoginIntercept()).addPathPatterns("/**");
-        registry.addInterceptor(new SmoothBurstyInterceptor(1000, SmoothBurstyInterceptor.LimitType.DROP)).addPathPatterns("/**");
+        registry.addInterceptor(new SmoothBurstyInterceptor(100, SmoothBurstyInterceptor.LimitType.DROP)).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 

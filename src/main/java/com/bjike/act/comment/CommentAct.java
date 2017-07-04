@@ -77,7 +77,7 @@ public class CommentAct {
             if(StringUtils.isBlank(dto.getUserId())){
                 dto.setUserId(request.getHeader("userId"));
             }
-            List<CommentVO> vos = BeanCopy.copyProperties(commentSer.list(dto),CommentVO.class);
+            List<CommentVO> vos =commentSer.list(dto);
             return ActResult.initialize(vos);
 
         } catch (SerException e) {
@@ -100,6 +100,7 @@ public class CommentAct {
             throw new ActException(e.getMessage());
         }
     }
+
 
     /**
      * 点评点赞
@@ -138,6 +139,23 @@ public class CommentAct {
             throw new ActException(e.getMessage());
         }
 
+    }
+
+
+    /**
+     * 店铺总评分
+     *
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/score/{pointId}")
+    public Result score( String pointId) throws ActException {
+        try {
+            return ActResult.initialize(commentSer.score(pointId));
+
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
     }
 
     /**

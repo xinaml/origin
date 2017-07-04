@@ -1,6 +1,7 @@
 package com.bjike.ser.comment;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.NumberUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.CommentDTO;
@@ -14,6 +15,7 @@ import com.bjike.entity.comment.Shop;
 import com.bjike.entity.user.User;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.comment.CommentTO;
+import com.bjike.type.comment.ScoreType;
 import com.bjike.vo.comment.CommentDetailsVO;
 import com.bjike.vo.comment.CommentVO;
 import org.apache.commons.lang3.StringUtils;
@@ -128,6 +130,15 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
         } else {
             throw new SerException("该评论不存在或已被删除!");
         }
+    }
+
+    @Override
+    public ScoreType score(String poindId) throws SerException {
+       String sql = "select  IFNULL(avg(score_type),0) from ike_comment a,ike_shop b where a.shop_id=b.id and b.point_id='"+poindId+"'";
+       List<Object> objects = super.findBySql(sql);
+       Double rs =  Double.valueOf(String.valueOf(objects.get(0)));
+       int code = (int)NumberUtil.decimal(rs);
+       return  ScoreType.getCode(code);
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.comment.Comment;
 import com.bjike.ser.Ser;
 import com.bjike.to.comment.CommentTO;
+import com.bjike.type.comment.ScoreType;
 import com.bjike.vo.comment.CommentDetailsVO;
 import com.bjike.vo.comment.CommentVO;
 
@@ -32,6 +33,9 @@ public interface ICommentSer extends Ser<Comment, CommentDTO> {
     }
 
     default void like(String commentId,String userId) throws SerException {
+    }
+    default ScoreType score(String pointId) throws SerException {
+        return null;
     }
 
     default void uploadImg(String commentId, List<File> files) throws SerException {

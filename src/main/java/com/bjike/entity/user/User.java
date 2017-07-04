@@ -1,6 +1,5 @@
 package com.bjike.entity.user;
 
-import com.bjike.dto.BaseDTO;
 import com.bjike.entity.BaseEntity;
 
 /**
@@ -10,7 +9,7 @@ import com.bjike.entity.BaseEntity;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     private String tu_id;
     private String token;
     private String nickname;
