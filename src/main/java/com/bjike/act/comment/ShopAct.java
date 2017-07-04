@@ -9,11 +9,14 @@ import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.ShopDTO;
 import com.bjike.entity.comment.Shop;
 import com.bjike.ser.comment.IShopSer;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: [liguiqin]
@@ -37,11 +40,12 @@ public class ShopAct {
      * @throws Exception
      */
     @GetMapping("/nearby")
-    public Result nearby(ShopDTO dto) throws ActException {
+    public Result nearby(ShopDTO dto, HttpServletRequest request) throws ActException {
         try {
-            dto.getConditions().add(Restrict.lt("pointX",dto.getPointX()));
-            dto.getConditions().add(Restrict.gt("pointY", dto.getPointY()));
-            return ActResult.initialize(shopSer.findByCis(dto));
+            if(StringUtils.isBlank(dto.getUserId())){
+                dto.setUserId(request.getHeader("userId"));
+            }
+            return ActResult.initialize(shopSer.nearby(dto));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

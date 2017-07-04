@@ -2,14 +2,14 @@ package com.bjike;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.servlet.MultipartConfigElement;
 import java.io.IOException;
 
 @EnableAutoConfiguration
@@ -17,7 +17,14 @@ import java.io.IOException;
 @Configuration
 @PropertySource({"classpath:config.properties"})
 @EnableTransactionManagement(proxyTargetClass = true)
-public class Application   {
+public class Application {
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize("800MB");
+        factory.setMaxRequestSize("800MB");
+        return factory.createMultipartConfig();
+    }
 
 
     public static void main(String[] args) throws IOException {

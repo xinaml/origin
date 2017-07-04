@@ -10,22 +10,45 @@ import com.bjike.dto.BaseDTO;
  * @Copy: [com.bjike]
  */
 public class ShopDTO extends BaseDTO{
-    private String pointX;
-    private String pointY;
+    private Double pointX;
+    private Double pointY;
+    /**
+     * 范围(千米)
+     */
+    private Double range=0.5;
 
-    public String getPointX() {
+    private String userId;
+
+
+    public Double getRange() {
+        return range;
+    }
+
+    public void setRange(Double range) {
+        this.range = range;
+    }
+
+    public Double getPointX() {
         return pointX;
     }
 
-    public void setPointX(String pointX) {
+    public void setPointX(Double pointX) {
         this.pointX = pointX;
     }
 
-    public String getPointY() {
+    public Double getPointY() {
         return pointY;
     }
 
-    public void setPointY(String pointY) {
+    public void setPointY(Double pointY) {
         this.pointY = pointY;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

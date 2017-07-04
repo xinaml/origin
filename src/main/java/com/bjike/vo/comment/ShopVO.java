@@ -36,7 +36,12 @@ public class ShopVO extends BaseTO {
 
     private String name;
 
+    /**
+     * 店铺用户评价top3
+     */
+    private String images[];
 
+    private String pointId;
 
     public String getAddress() {
         return address;
@@ -70,4 +75,19 @@ public class ShopVO extends BaseTO {
         this.name = name;
     }
 
+    public String[] getImages() {
+        return images;
+    }
+
+    public void setImages(String[] images) {
+        this.images = images;
+    }
+
+    public String getPointId() {
+        return pointId;
+    }
+
+    public void setPointId(String pointId) {
+        this.pointId = pointId;
+    }
 }

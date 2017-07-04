@@ -15,7 +15,7 @@ import javax.persistence.*;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "ike_comment")
 public class Comment extends BaseEntity {
     /**
      * 点评人

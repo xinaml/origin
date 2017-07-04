@@ -31,7 +31,10 @@ public class ShopTO extends BaseTO {
 
     private String pointY;
 
-
+    /**
+     * 范围(千米)
+     */
+    private Double range=0.5;
     /**
      * 店铺名
      */
@@ -73,4 +76,11 @@ public class ShopTO extends BaseTO {
         this.name = name;
     }
 
+    public Double getRange() {
+        return range;
+    }
+
+    public void setRange(Double range) {
+        this.range = range;
+    }
 }

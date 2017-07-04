@@ -63,7 +63,10 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
                 shopSer.add(shop);
                 comment.setShop(shop);
             }
-            return super.save(comment);
+             super.save(comment);
+            uploadImg(comment.getId(),files);
+            return comment;
+
         } catch (SerException e) {
             for (File file : files) {
                 file.delete();
