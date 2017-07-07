@@ -49,14 +49,14 @@ public class CommentAct {
      * @throws Exception
      */
     @PostMapping("/add")
-    public Result add(@Validated(ADD.class) CommentTO to, BindingResult result,HttpServletRequest request) throws ActException {
+    public Result add(@Validated(ADD.class) CommentTO to, BindingResult result, HttpServletRequest request) throws ActException {
         try {
-            if(StringUtils.isBlank(to.getUserId())){
+            if (StringUtils.isBlank(to.getUserId())) {
                 to.setUserId(request.getHeader("userId"));
             }
-            List<File> files = FileUtil.save(request,"/comment/"+ DateUtil.dateToString(LocalDate.now()));
-            Comment comment = commentSer.add(to,files);
-            CommentVO  vo = BeanCopy.copyProperties(comment,CommentVO.class);
+            List<File> files = FileUtil.save(request, "/comment/" + DateUtil.dateToString(LocalDate.now()));
+            Comment comment = commentSer.add(to, files);
+            CommentVO vo = BeanCopy.copyProperties(comment, CommentVO.class);
             return ActResult.initialize(vo);
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -72,12 +72,12 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/list")
-    public Result list(CommentDTO dto,HttpServletRequest request) throws ActException {
+    public Result list(CommentDTO dto, HttpServletRequest request) throws ActException {
         try {
-            if(StringUtils.isBlank(dto.getUserId())){
+            if (StringUtils.isBlank(dto.getUserId())) {
                 dto.setUserId(request.getHeader("userId"));
             }
-            List<CommentVO> vos =commentSer.list(dto);
+            List<CommentVO> vos = commentSer.list(dto);
             return ActResult.initialize(vos);
 
         } catch (SerException e) {
@@ -92,7 +92,7 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/count")
-    public Result count( String pointId) throws ActException {
+    public Result count(String pointId) throws ActException {
         try {
             return ActResult.initialize(commentSer.count(pointId));
 
@@ -109,12 +109,32 @@ public class CommentAct {
      * @throws Exception
      */
     @PutMapping("/like/{commentId}")
-    public Result like(@PathVariable String commentId,String userId,HttpServletRequest request) throws ActException {
+    public Result like(@PathVariable String commentId, String userId, HttpServletRequest request) throws ActException {
         try {
-            if(StringUtils.isBlank(userId)){
+            if (StringUtils.isBlank(userId)) {
                 userId = request.getHeader("userId");
             }
-            commentSer.like(commentId,userId);
+            commentSer.like(commentId, userId);
+            return ActResult.initialize("success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+
+    }
+
+    /**
+     * 点评取消点赞
+     *
+     * @return
+     * @throws Exception
+     */
+    @PutMapping("/cancel/like/{commentId}")
+    public Result notLike(@PathVariable String commentId, String userId, HttpServletRequest request) throws ActException {
+        try {
+            if (StringUtils.isBlank(userId)) {
+                userId = request.getHeader("userId");
+            }
+            commentSer.cancelLike(commentId, userId);
             return ActResult.initialize("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -149,7 +169,7 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/score/{pointId}")
-    public Result score( String pointId) throws ActException {
+    public Result score(String pointId) throws ActException {
         try {
             return ActResult.initialize(commentSer.score(pointId));
 
@@ -166,10 +186,10 @@ public class CommentAct {
      * @throws Exception
      */
     @PostMapping("/upload/img/{commentId}")
-    public Result uploadImg(@PathVariable String commentId,  HttpServletRequest request) throws ActException {
+    public Result uploadImg(@PathVariable String commentId, HttpServletRequest request) throws ActException {
         try {
-            List<File> files = FileUtil.save(request,"/comment/"+ DateUtil.dateToString(LocalDate.now()));
-            commentSer.uploadImg(commentId,files);
+            List<File> files = FileUtil.save(request, "/comment/" + DateUtil.dateToString(LocalDate.now()));
+            commentSer.uploadImg(commentId, files);
             return ActResult.initialize("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -185,12 +205,12 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/details/{commentId}")
-    public Result details(@PathVariable String commentId,String userId,HttpServletRequest request) throws ActException {
-        if(StringUtils.isBlank(userId)){
+    public Result details(@PathVariable String commentId, String userId, HttpServletRequest request) throws ActException {
+        if (StringUtils.isBlank(userId)) {
             userId = request.getHeader("userId");
         }
         try {
-           CommentDetailsVO vo =  commentSer.details(commentId,userId);
+            CommentDetailsVO vo = commentSer.details(commentId, userId);
             return ActResult.initialize(vo);
         } catch (SerException e) {
             throw new ActException(e.getMessage());

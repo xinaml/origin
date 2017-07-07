@@ -14,6 +14,7 @@ import com.bjike.entity.comment.Picture;
 import com.bjike.entity.comment.Shop;
 import com.bjike.entity.user.User;
 import com.bjike.ser.ServiceImpl;
+import com.bjike.ser.user.IUserSer;
 import com.bjike.to.comment.CommentTO;
 import com.bjike.type.comment.ScoreType;
 import com.bjike.vo.comment.CommentDetailsVO;
@@ -42,12 +43,14 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     private IPictureSer pictureSer;
     @Autowired
     private ILikesSer likesSer;
+    @Autowired
+    private IUserSer userSer;
 
     @Override
     public Comment add(CommentTO to, List<File> files) throws SerException {
         try {
             Comment comment = BeanCopy.copyProperties(to, Comment.class);
-            User user = getUser(to.getUserId());
+            User user = userSer.findById(to.getUserId());
             comment.setUserId(user.getTu_id());
             ShopDTO shopDTO = new ShopDTO();
             shopDTO.getConditions().add(Restrict.eq("pointId", to.getPointId()));
@@ -65,8 +68,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
                 shopSer.add(shop);
                 comment.setShop(shop);
             }
-             super.save(comment);
-            uploadImg(comment.getId(),files);
+            super.save(comment);
+            uploadImg(comment.getId(), files);
             return comment;
 
         } catch (SerException e) {
@@ -81,21 +84,18 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
     @Override
     public List<CommentVO> list(CommentDTO dto) throws SerException {
-        List<Comment> comments = super.findByCis(dto);
+        dto.getConditions().add(Restrict.eq("shop.pointId", dto.getPointId()));
+        dto.getSorts().add("likes");
+        List<Comment> comments = super.findByPage(dto);
         List<CommentVO> vos = BeanCopy.copyProperties(comments, CommentVO.class);
-        if(null!=vos){
+        if (null != vos) {
             for (CommentVO comment : vos) {
                 comment.setAlreadyLikes(alreadyLike(dto.getUserId()));
-                PictureDTO pictureDTO = new PictureDTO();
-                dto.getConditions().add(Restrict.eq("comment.id", comment.getId()));
-                List<Picture> pictures = pictureSer.findByCis(pictureDTO);
-                String[] images = new String[pictures.size()];
-                for (int i = 0; i < pictures.size(); i++) {
-                    images[i] = pictures.get(i).getPath();
-                }
-                User user = getUser(dto.getUserId());
+                String[] images = getImages(comment.getId());
+                User user = userSer.findById(dto.getUserId());
                 comment.setNickname(user.getNickname());
                 comment.setHeadPath(user.getHeadPath());
+                comment.setImages(images);
             }
         }
 
@@ -104,8 +104,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
     @Override
     public Long count(String pointId) throws SerException {
-        if(StringUtils.isBlank(pointId)){
-            throw  new SerException("坐标id不能为空");
+        if (StringUtils.isBlank(pointId)) {
+            throw new SerException("坐标id不能为空");
         }
         CommentDTO dto = new CommentDTO();
         dto.getConditions().add(Restrict.eq("shop.pointId", pointId));
@@ -120,8 +120,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
             comment.setLikes(comment.getLikes() != null ? (comment.getLikes() + 1) : 1);
             super.update(comment);
             LikesDTO dto = new LikesDTO();
-            dto.getConditions().add(Restrict.eq("userId",userId));
-            if(likesSer.findByCis(dto).size()==0){
+            dto.getConditions().add(Restrict.eq("userId", userId));
+            if (likesSer.findByCis(dto).size() == 0) {
                 Likes likes = new Likes();
                 likes.setComment(comment);
                 likes.setUserId(userId);
@@ -133,12 +133,27 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     }
 
     @Override
+    public void cancelLike(String commentId, String userId) throws SerException {
+        Comment comment = super.findById(commentId);
+        LikesDTO dto = new LikesDTO();
+        dto.getConditions().add(Restrict.eq("userId", userId));
+        List<Likes> likes = likesSer.findByCis(dto);
+        likesSer.remove(likes);
+        if (null != comment && null != likes && likes.size() > 0) {
+            comment.setLikes(comment.getLikes() != null ? (comment.getLikes() - 1) : 0);
+            super.update(comment);
+        } else {
+            throw new SerException("该评论不存在或已被删除!");
+        }
+    }
+
+    @Override
     public ScoreType score(String poindId) throws SerException {
-       String sql = "select  IFNULL(avg(score_type),0) from ike_comment a,ike_shop b where a.shop_id=b.id and b.point_id='"+poindId+"'";
-       List<Object> objects = super.findBySql(sql);
-       Double rs =  Double.valueOf(String.valueOf(objects.get(0)));
-       int code = (int)NumberUtil.decimal(rs);
-       return  ScoreType.getCode(code);
+        String sql = "select  IFNULL(avg(score_type),0) from ike_comment a,ike_shop b where a.shop_id=b.id and b.point_id='" + poindId + "'";
+        List<Object> objects = super.findBySql(sql);
+        Double rs = Double.valueOf(String.valueOf(objects.get(0)));
+        int code = (int) NumberUtil.decimal(rs);
+        return ScoreType.getCode(code);
     }
 
     @Transactional
@@ -158,7 +173,7 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
     @Override
     public CommentDetailsVO details(String commentId, String userId) throws SerException {
-        User user = getUser(userId);
+        User user = userSer.findById(userId);
         Comment comment = super.findById(commentId);
         if (null != comment) {
             CommentDetailsVO vo = BeanCopy.copyProperties(comment, CommentDetailsVO.class);
@@ -189,13 +204,5 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
         return images;
     }
 
-    public User getUser(String userId) throws SerException {
-        String sql = "select a.tu_id ,b.avatar_image as headPath,a.nickname from ike_user a,ike_avatar b where" +
-                " a.avatar_id=b.avatar_id and a.tu_id='" + userId + "'";
-        List<User> users = pictureSer.findBySql(sql, User.class, new String[]{"tu_id","headPath","nickname"});
-        if (null != users && users.size() > 0) {
-            return users.get(0);
-        }
-        throw new SerException("没找到用户");
-    }
+
 }

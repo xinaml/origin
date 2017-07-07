@@ -42,7 +42,7 @@ public class Comment extends BaseEntity {
     /**
      * 点赞量
      */
-    @Column(columnDefinition = "INT(8) COMMENT '点赞量' ")
+    @Column(columnDefinition = "INT(8) default 0  COMMENT '点赞量' " ,insertable = false)
     private Integer likes;
     /**
      * 可见范围

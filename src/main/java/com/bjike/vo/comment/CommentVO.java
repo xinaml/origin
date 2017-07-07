@@ -1,11 +1,8 @@
 package com.bjike.vo.comment;
 
-import com.bjike.to.BaseTO;
 import com.bjike.type.comment.ScoreType;
 import com.bjike.type.comment.VisibleType;
 import com.bjike.vo.BaseVO;
-
-import java.time.LocalDateTime;
 
 /**
  * @Author: [liguiqin]
@@ -45,13 +42,13 @@ public class CommentVO extends BaseVO {
     /**
      * 点赞数
      */
-    private String likesCount;
+    private Integer likes;
     /**
      * 是否已赞
      */
     private Boolean alreadyLikes;
 
-    private LocalDateTime createTime;
+    private String createTime;
 
 
     public String getContent() {
@@ -102,12 +99,12 @@ public class CommentVO extends BaseVO {
         this.headPath = headPath;
     }
 
-    public String getLikesCount() {
-        return likesCount;
+    public Integer getLikes() {
+        return likes;
     }
 
-    public void setLikesCount(String likesCount) {
-        this.likesCount = likesCount;
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
     public Boolean getAlreadyLikes() {
@@ -118,11 +115,11 @@ public class CommentVO extends BaseVO {
         this.alreadyLikes = alreadyLikes;
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

@@ -18,6 +18,7 @@ import java.io.IOException;
 @PropertySource({"classpath:config.properties"})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application {
+
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();

@@ -20,28 +20,90 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 public interface ICommentSer extends Ser<Comment, CommentDTO> {
+    /**
+     * 添加评论
+     *
+     * @param to
+     * @param files
+     * @return
+     * @throws SerException
+     */
     default Comment add(CommentTO to, List<File> files) throws SerException {
         return null;
     }
 
+    /**
+     * 店铺评论列表
+     *
+     * @param dto
+     * @return
+     * @throws SerException
+     */
     default List<CommentVO> list(CommentDTO dto) throws SerException {
         return null;
     }
 
+    /**
+     * 店铺评论列表数量
+     *
+     * @param pointId
+     * @return
+     * @throws SerException
+     */
     default Long count(String pointId) throws SerException {
         return null;
     }
 
-    default void like(String commentId,String userId) throws SerException {
+    /**
+     * 点赞
+     *
+     * @param commentId
+     * @param userId
+     * @throws SerException
+     */
+    default void like(String commentId, String userId) throws SerException {
     }
+
+    /**
+     * 取消点赞
+     *
+     * @param commentId
+     * @param userId
+     * @throws SerException
+     */
+    default void cancelLike(String commentId, String userId) throws SerException {
+    }
+
+    /**
+     * 店铺总评分
+     *
+     * @param pointId
+     * @return
+     * @throws SerException
+     */
     default ScoreType score(String pointId) throws SerException {
         return null;
     }
 
+    /**
+     * 上传图片
+     *
+     * @param commentId
+     * @param files
+     * @throws SerException
+     */
     default void uploadImg(String commentId, List<File> files) throws SerException {
     }
 
-    default CommentDetailsVO details(String commentId,String userId) throws SerException {
+    /**
+     * 评论详情
+     *
+     * @param commentId
+     * @param userId
+     * @return
+     * @throws SerException
+     */
+    default CommentDetailsVO details(String commentId, String userId) throws SerException {
         return null;
     }
 

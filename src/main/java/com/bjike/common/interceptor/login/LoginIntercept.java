@@ -2,7 +2,11 @@ package com.bjike.common.interceptor.login;
 
 import com.bjike.common.http.ResponseContext;
 import com.bjike.common.restful.ActResult;
+import com.bjike.entity.user.User;
+import com.bjike.ser.user.IUserSer;
+import com.bjike.session.UserSession;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +31,7 @@ import java.lang.reflect.Method;
 @Component
 public class LoginIntercept extends HandlerInterceptorAdapter {
 
+   public static IUserSer userSer;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -58,9 +63,22 @@ public class LoginIntercept extends HandlerInterceptorAdapter {
 
     private boolean validateLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if (StringUtils.isNotBlank(request.getParameter("userId"))||
-                    StringUtils.isNotBlank(request.getHeader("userId"))) {
-                return true;
+            String userId = request.getHeader("userId");
+            if (StringUtils.isNotBlank(request.getParameter("userId")) ||
+                    StringUtils.isNotBlank(userId)) {
+                if (null == UserSession.get(userId)) {
+                    User user = userSer.findById(userId);
+                    if (null != user) {
+                        UserSession.put(userId, user);
+                        return true;
+                    } else {
+                        handlerNotHasLogin(response, "用户账号密码或错误！");
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+
             } else {
                 handlerNotHasLogin(response, "用户未登录！");
                 return false;

@@ -4,7 +4,6 @@ import com.bjike.common.exception.SerException;
 import com.bjike.dto.comment.ShopDTO;
 import com.bjike.entity.comment.Shop;
 import com.bjike.ser.Ser;
-import com.bjike.to.comment.ShopTO;
 import com.bjike.vo.comment.ShopVO;
 
 import java.util.List;
@@ -17,9 +16,24 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 public interface IShopSer extends Ser<Shop, ShopDTO> {
+    /**
+     * 添加店铺
+     *
+     * @param shop
+     * @return
+     * @throws SerException
+     */
     default Shop add(Shop shop) throws SerException {
         return null;
     }
+
+    /**
+     * 附近店铺
+     *
+     * @param dto
+     * @return
+     * @throws SerException
+     */
     default List<ShopVO> nearby(ShopDTO dto) throws SerException {
         return null;
     }

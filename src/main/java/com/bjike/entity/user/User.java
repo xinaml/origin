@@ -10,11 +10,19 @@ import com.bjike.entity.BaseEntity;
  * @Copy: [com.bjike]
  */
 public class User extends BaseEntity {
+    /**
+     * 用户id
+     */
     private String tu_id;
     private String token;
     private String nickname;
     private Boolean online;
     private String headPath;
+    /**
+     * 用户位置
+     */
+    private String pointX;
+    private String pointY;
 
     public String getTu_id() {
         return tu_id;
@@ -54,5 +62,21 @@ public class User extends BaseEntity {
 
     public void setHeadPath(String headPath) {
         this.headPath = headPath;
+    }
+
+    public String getPointX() {
+        return pointX;
+    }
+
+    public void setPointX(String pointX) {
+        this.pointX = pointX;
+    }
+
+    public String getPointY() {
+        return pointY;
+    }
+
+    public void setPointY(String pointY) {
+        this.pointY = pointY;
     }
 }
