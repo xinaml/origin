@@ -78,7 +78,7 @@ public class ActionJSR303 {
             if (null != fieldErrors && fieldErrors.size() > 0) {
                 ActResult actResult = new ActResult();
                 actResult.setCode(2);
-                actResult.setMsg("参数检验不通过");
+                actResult.setMsg("参数校验不通过");
                 actResult.setData(new JsrTip(fieldErrors.get(0).getField(), fieldErrors.get(0).getDefaultMessage()));
                 ResponseContext.writeData(JSON.toJSONString(actResult));
                 return true;
