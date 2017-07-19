@@ -24,6 +24,8 @@ public class User extends BaseEntity {
     private String pointX;
     private String pointY;
 
+    private User chain;
+
     public String getTu_id() {
         return tu_id;
     }
@@ -78,5 +80,13 @@ public class User extends BaseEntity {
 
     public void setPointY(String pointY) {
         this.pointY = pointY;
+    }
+
+    public User getChain() {
+        return chain;
+    }
+
+    public void setChain(User chain) {
+        this.chain = chain;
     }
 }

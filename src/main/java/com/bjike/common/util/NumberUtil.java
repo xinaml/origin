@@ -30,10 +30,6 @@ public class NumberUtil {
         return bg.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
-    public static void main(String[] args) {
-        Double x = 55.78;
-        Double y = 55.78;
-        System.out.println(y.doubleValue()==x.doubleValue());
-    }
+
 
 }

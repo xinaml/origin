@@ -76,8 +76,8 @@ dependencies {
 // poi
     compile group: 'org.apache.poi', name: 'poi', version: "$poi_version"
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: "$poi_version"
-
-
+//websocket
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.4.RELEASE'
 
 
 }

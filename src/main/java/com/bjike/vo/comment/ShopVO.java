@@ -3,6 +3,7 @@ package com.bjike.vo.comment;
 import com.bjike.common.aspect.ADD;
 import com.bjike.common.aspect.EDIT;
 import com.bjike.to.BaseTO;
+import com.bjike.vo.BaseVO;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -13,7 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @Copy: [com.bjike]
  */
 
-public class ShopVO extends BaseTO {
+public class ShopVO extends BaseVO {
     /**
      * 地址
      */
