@@ -1,5 +1,6 @@
 package com.bjike.entity.chat;
 
+import com.bjike.entity.BaseEntity;
 import com.bjike.type.chat.MsgType;
 
 /**
@@ -9,7 +10,7 @@ import com.bjike.type.chat.MsgType;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class Msg {
+public class Msg extends BaseEntity{
     /**
      * 发送人
      */
@@ -35,6 +36,8 @@ public class Msg {
      * 接收组
      */
     private String group;
+
+    private String receiver;
 
     public String getSenderName() {
         return senderName;
@@ -82,5 +85,13 @@ public class Msg {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }

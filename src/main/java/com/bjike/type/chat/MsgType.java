@@ -12,7 +12,6 @@ public enum  MsgType {
     POINT(1),//点对点
     GROUP(2),;//群发
     private int value;
-
     MsgType(int value) {
         this.value = value;
     }

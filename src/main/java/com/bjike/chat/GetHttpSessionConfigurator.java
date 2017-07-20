@@ -1,4 +1,4 @@
-package com.bjike.ser.chat;
+package com.bjike.chat;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;

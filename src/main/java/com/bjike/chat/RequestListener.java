@@ -1,4 +1,4 @@
-package com.bjike.ser.chat;
+package com.bjike.chat;
 
 import org.springframework.stereotype.Component;
 

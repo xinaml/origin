@@ -1,4 +1,4 @@
-package com.bjike.ser.chat;
+package com.bjike.chat;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

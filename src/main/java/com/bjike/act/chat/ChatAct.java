@@ -4,10 +4,8 @@ import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
 import com.bjike.entity.chat.Client;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.bjike.session.ChatSession;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +27,13 @@ public class ChatAct {
     public Result online() {
         List<Client> chatClients = new ArrayList<>();
         return ActResult.initialize(chatClients);
+    }
+
+    @RequestMapping(value = "quit/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result quit(@PathVariable String userId) {
+        ChatSession.remove(userId);
+        return ActResult.initialize("quit success");
     }
 
 }

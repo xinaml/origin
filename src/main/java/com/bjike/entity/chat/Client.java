@@ -18,14 +18,12 @@ public class Client {
      * 头像
      */
     private String headPath;
-    /**
-     * 会话id
-     */
-    private String sid;
+
     /**
      * 会话
      */
     private Session session;
+
 
     public String getUsername() {
         return username;
@@ -41,14 +39,6 @@ public class Client {
 
     public void setHeadPath(String headPath) {
         this.headPath = headPath;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
     }
 
     public Session getSession() {

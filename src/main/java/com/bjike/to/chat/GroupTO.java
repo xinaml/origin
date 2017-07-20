@@ -1,30 +1,19 @@
-package com.bjike.entity.chat;
+package com.bjike.to.chat;
 
-import com.bjike.entity.BaseEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.bjike.to.BaseTO;
 
 /**
- * 聊天群
- *
  * @Author: [liguiqin]
- * @Date: [2017-07-19 15:04]
+ * @Date: [2017-07-20 10:56]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-@Entity
-@Table(name = "ike_chat_group")
-public class Group extends BaseEntity {
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '聊天室名称' ", nullable = false)
+public class GroupTO extends BaseTO {
     private String name;
 
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '创建人' ", nullable = false)
     private String userId;//创建人
 
-    @Column(columnDefinition = "VARCHAR(500) COMMENT '群描述' ", nullable = false)
     private String description;//群描述
 
     public String getName() {

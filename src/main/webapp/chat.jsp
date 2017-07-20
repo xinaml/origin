@@ -1,5 +1,5 @@
 
-<script src="jquery.2.1.4.min.js" type="text/javascript"
+<script src="js/jquery.2.1.4.min.js" type="text/javascript"
         charset="utf-8"></script>
 <!DOCTYPE html>
 <html>
@@ -12,11 +12,15 @@
 </div>
 <div id="friends" style="width:300px; height:550px;border: 2px solid darkslategrey;float: right">
 </div>
+<div>
+    <button value="发送" onclick="sendMsg()">发送</button>
+
+</div>
 <br>
 <script type="text/javascript">
-    var socketUrl = "ws" + '://' + window.location.host + '/chat';
+    var socketUrl = "ws" + '://' + window.location.host + '/chat/13824692192';
     var webSocket = new WebSocket(socketUrl);
-    online();
+
     webSocket.onerror = function (event) {
         onError(event)
     };
@@ -29,9 +33,12 @@
         onMessage(event)
     };
 
-    function onMessage(event) {
 
-        $("#messages").html("test message")
+    function onMessage(event) {
+        var msg = event.data;
+        console.info(msg)
+        msg = jQuery.parseJSON(msg);
+        $("#messages").append("</br>"+msg.senderName+":"+msg.content)
 
     }
 
@@ -48,14 +55,13 @@
     }
 
     function sendMsg() {
-        var content = ue.getContent();
+        var content ="测试发送消息";
         var chatMsg = new Object();
-        chatMsg.sender = $username;
-        chatMsg.receiver = "接收人";
+        chatMsg.senderName = "xinaml";
+        chatMsg.receiver = "13818209557";
         chatMsg.chatType = 'PUB'
-        chatMsg.content = content.substring(3, content.length - 4);
+        chatMsg.content = content;
         webSocket.send(JSON.stringify(chatMsg));
-        ue.setContent("");
         return false;
     }
 
@@ -72,7 +78,7 @@
     }
     //监听窗口关闭事件
     window.onbeforeunload = function () {
-// webSocket.close();
+     webSocket.close();
     }
 </script>
 

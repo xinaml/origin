@@ -62,12 +62,12 @@ public class ChatSession {
     /**
      * 根据令牌删除用户会话信息
      *
-     * @param sId 登录令牌
+     * @param userId 登录令牌
      * @return 是否删除成功
      */
-    public static void remove(String sId) {
-        if (StringUtils.isNotBlank(sId)) {
-            CHAT_SESSION.invalidate(sId);
+    public static void remove(String userId) {
+        if (StringUtils.isNotBlank(userId)) {
+            CHAT_SESSION.invalidate(userId);
         } else {
 
             throw TOKEN_NOT_NULL;
@@ -75,10 +75,10 @@ public class ChatSession {
     }
 
 
-    public static Client get(String sId) {
+    public static Client get(String userId) {
         try {
-            if (StringUtils.isNotBlank(sId)) {
-                return CHAT_SESSION.get(sId);
+            if (StringUtils.isNotBlank(userId)) {
+                return CHAT_SESSION.get(userId);
             }
             throw TOKEN_NOT_NULL;
         } catch (Exception e) {
@@ -108,11 +108,11 @@ public class ChatSession {
         return null;
     }
 
-    public static boolean exists(String sId) throws SerException {
+    public static boolean exists(String userId) throws SerException {
         try {
-            return CHAT_SESSION.get(sId) != null;
+            return CHAT_SESSION.getUnchecked(userId) != null;
         } catch (Exception e) {
-            throw new SerException(e.getMessage());
+            return false;
         }
     }
 
