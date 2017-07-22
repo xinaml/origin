@@ -54,7 +54,7 @@ public class CommentAct {
             if (StringUtils.isBlank(to.getUserId())) {
                 to.setUserId(request.getHeader("userId"));
             }
-            List<File> files = FileUtil.save(request, "/comment/" + DateUtil.dateToString(LocalDate.now()));
+            List<File> files = FileUtil.save(request, getCommentPath(to.getUserId()));
             Comment comment = commentSer.add(to, files);
             CommentVO vo = BeanCopy.copyProperties(comment, CommentVO.class);
             return ActResult.initialize(vo);
@@ -188,7 +188,7 @@ public class CommentAct {
     @PostMapping("/upload/img/{commentId}")
     public Result uploadImg(@PathVariable String commentId, HttpServletRequest request) throws ActException {
         try {
-            List<File> files = FileUtil.save(request, "/comment/" + DateUtil.dateToString(LocalDate.now()));
+            List<File> files = FileUtil.save(request, getCommentPath(request.getHeader("userId")));
             commentSer.uploadImg(commentId, files);
             return ActResult.initialize("success");
         } catch (SerException e) {
@@ -216,6 +216,16 @@ public class CommentAct {
             throw new ActException(e.getMessage());
         }
 
+    }
+
+    /**
+     * 评论图片保存路径
+     *
+     * @param userId
+     * @return
+     */
+    private String getCommentPath(String userId) {
+        return "/" + userId + "/comment/" + DateUtil.dateToString(LocalDate.now()).replaceAll("-", "");
     }
 
 }

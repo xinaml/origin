@@ -30,15 +30,22 @@ public class Msg extends BaseEntity{
     /**
      * 消息类型
      */
-    private MsgType msgType = MsgType.POINT;//消息类型
+    private MsgType msgType ;//消息类型
 
     /**
      * 接收组
      */
     private String group;
 
+    /**
+     * 接收人
+     */
     private String receiver;
 
+    /**
+     * 上下线用户
+     */
+    private String userId;
     public String getSenderName() {
         return senderName;
     }
@@ -93,5 +100,13 @@ public class Msg extends BaseEntity{
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

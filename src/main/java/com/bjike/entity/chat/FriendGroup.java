@@ -1,5 +1,11 @@
 package com.bjike.entity.chat;
 
+import com.bjike.entity.BaseEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * 朋友分组
  *
@@ -9,8 +15,12 @@ package com.bjike.entity.chat;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class GroupFriend {
+@Entity
+@Table(name = "ike_chat_friend_group")
+public class FriendGroup extends BaseEntity {
+    @Column(columnDefinition = "VARCHAR(36) COMMENT '朋友分组名' ", nullable = false)
     private String name;//分组名
+    @Column(columnDefinition = "VARCHAR(36) COMMENT '归属人' ", nullable = false)
     private String userId;//归属人
 
     public String getName() {

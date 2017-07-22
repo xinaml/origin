@@ -1,10 +1,9 @@
-
 <script src="js/jquery.2.1.4.min.js" type="text/javascript"
         charset="utf-8"></script>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Testing websockets</title>
+    <title>Test webSockets</title>
 </head>
 <body>
 <div id="messages" style="overflow-y:auto; overflow-x:auto;
@@ -18,7 +17,7 @@
 </div>
 <br>
 <script type="text/javascript">
-    var socketUrl = "ws" + '://' + window.location.host + '/chat/13824692192';
+    var socketUrl = "ws" + '://' + window.location.host + '/chat/13160877272';
     var webSocket = new WebSocket(socketUrl);
 
     webSocket.onerror = function (event) {
@@ -36,9 +35,7 @@
 
     function onMessage(event) {
         var msg = event.data;
-        console.info(msg)
-        msg = jQuery.parseJSON(msg);
-        $("#messages").append("</br>"+msg.senderName+":"+msg.content)
+        $("#messages").append("<img src='/file/thumbnails?path=/comment/2017-07-06/IMG_20170613_172333.jpg' ondblclick='download(\"/comment/2017-07-06/IMG_20170613_172333.jpg\")'/>")
 
     }
 
@@ -50,17 +47,17 @@
         alert(event.data);
     }
 
-    function online() {
-        console.info("online ")
-    }
+
 
     function sendMsg() {
         var content ="测试发送消息";
         var chatMsg = new Object();
+        chatMsg.senderId = "13818209557";
         chatMsg.senderName = "xinaml";
         chatMsg.receiver = "13818209557";
-        chatMsg.chatType = 'PUB'
+        chatMsg.msgType = 'POINT'
         chatMsg.content = content;
+        console.info("send msg")
         webSocket.send(JSON.stringify(chatMsg));
         return false;
     }
@@ -79,6 +76,10 @@
     //监听窗口关闭事件
     window.onbeforeunload = function () {
      webSocket.close();
+    }
+    function download(path) {
+        window.open("/file/download?path="+path)
+
     }
 </script>
 

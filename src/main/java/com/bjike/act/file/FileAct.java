@@ -23,7 +23,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("file")
 public class FileAct {
-    private static final String[] IMAGE_SUFFIX = new String[]{"jpg", "bmp", "gif","png","jpeg","svg"};
+    private static final String[] IMAGE_SUFFIX = new String[]{"jpg", "bmp", "gif", "png", "jpeg", "svg"};
 
     /**
      * 获取缩略图
@@ -55,7 +55,7 @@ public class FileAct {
                     throw new SerException("缩略图获取错误");
                 }
             } else {
-                throw new SerException("不支持"+suffix+"该文件类型缩略图");
+                throw new SerException("不支持" + suffix + "该文件类型缩略图");
             }
 
         } catch (Exception e) {
@@ -88,9 +88,24 @@ public class FileAct {
                     throw new SerException("获取原图错误");
                 }
             } else {
-                throw new SerException("不支持"+suffix+"该文件类型");
+                throw new SerException("不支持" + suffix + "该文件类型");
             }
 
+        } catch (Exception e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    @GetMapping("download")
+    public void download(HttpServletResponse response, String path) throws ActException {
+        try {
+            String fileName = StringUtils.substringAfterLast(path, "/");
+            try {
+                byte[] bytes = FileUtil.FileToByte(FileUtil.getRealPath(path));
+                FileUtil.writeOutFile(response, bytes, fileName);
+            } catch (IOException e) {
+                throw new SerException("下载错误");
+            }
         } catch (Exception e) {
             throw new ActException(e.getMessage());
         }

@@ -3,9 +3,11 @@ package com.bjike.ser.chat;
 import com.alibaba.fastjson.JSON;
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.Restrict;
+import com.bjike.dto.chat.FriendDTO;
 import com.bjike.dto.chat.GroupMemberDTO;
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Client;
+import com.bjike.entity.chat.Friend;
 import com.bjike.entity.chat.GroupMember;
 import com.bjike.entity.chat.Msg;
 import com.bjike.entity.user.User;
@@ -36,6 +38,8 @@ public class ChatSerImpl implements IChatSer {
     private IUserSer userSer;
     @Autowired
     private IMsgSer msgSer;
+    @Autowired
+    private IFriendSer friendSer;
 
     /**
      * 初始化客户端
@@ -43,40 +47,56 @@ public class ChatSerImpl implements IChatSer {
      * @param userId
      * @return
      */
-    public Client initChatClient(String userId, Session session) {
+    public Boolean initClient(String userId, Session session) throws SerException {
+        Boolean exists = false; //已存在会话
         try {
-            if (!ChatSession.exists(userId)) {
-                Client client = new Client();
+            Client client = null;
+            client = ChatSession.get(userId);
+            if (null != client) {
+                client.setSession(session); //更新session
+                exists = true;
+
+            } else {
+                client = new Client();
                 User sender = userSer.findById(userId);
                 client.setUsername(sender.getNickname());
                 client.setHeadPath(sender.getHeadPath());
                 client.setSession(session);
-                //读取离线时未接收到的消息
-                readOffLineMsg(userId);
-                return client;
+                ChatSession.put(userId, client);
+                exists = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return exists;
     }
 
-    public void broadcast(Msg msg,String senderId) throws SerException {
-        switch (msg.getMsgType()) {
-            case POINT:
-                sendMsg(Arrays.asList(msg),senderId);
-                break;
-            case GROUP:
-                GroupMemberDTO dto = new GroupMemberDTO();
-                dto.getConditions().add(Restrict.eq("id", msg.getGroup()));
-                List<GroupMember> groupMembers = groupMember.findByCis(dto);
-                for (GroupMember member : groupMembers) {
-                    msg.setReceiver(member.getUserId());
-                    sendMsg(Arrays.asList(msg),senderId);
-                }
-                break;
-            case PUB:
-                break; //all
+    public void broadcast(Msg msg, String senderId) throws SerException {
+        if (null != msg.getMsgType()) {
+            switch (msg.getMsgType()) {
+                case POINT:
+                    sendMsg(Arrays.asList(msg), senderId);
+                    break;
+                case GROUP:
+                    GroupMemberDTO dto = new GroupMemberDTO();
+                    dto.getConditions().add(Restrict.eq("id", msg.getGroup()));
+                    List<GroupMember> groupMembers = groupMember.findByCis(dto);
+                    for (GroupMember member : groupMembers) {
+                        msg.setReceiver(member.getUserId());
+                        sendMsg(Arrays.asList(msg), senderId);
+                    }
+                    break;
+                case ONLINE:
+                    sendLineMsg(msg);
+                    break;
+                case OFFLINE:
+                    sendLineMsg(msg);
+                    break;
+                case SYS:
+                    break; //all
+            }
+        } else {
+            throw new SerException("消息类型不能为空");
         }
     }
 
@@ -87,10 +107,10 @@ public class ChatSerImpl implements IChatSer {
      */
     public void readOffLineMsg(String userId) throws SerException {
         MsgDTO dto = new MsgDTO();
-        dto.getConditions().add(Restrict.eq("receiver",userId));
-         List<Msg> msgs = msgSer.findByCis(dto);
-         sendMsg(msgs,userId);
-         msgSer.remove(msgs);
+        dto.getConditions().add(Restrict.eq("receiver", userId));
+        List<Msg> msgs = msgSer.findByCis(dto);
+        sendMsg(msgs, userId);
+        msgSer.remove(msgs);
     }
 
     /**
@@ -99,7 +119,7 @@ public class ChatSerImpl implements IChatSer {
      * @param msgs
      * @throws SerException
      */
-    private void sendMsg(List<Msg> msgs,String userId) throws SerException {
+    private void sendMsg(List<Msg> msgs, String userId) throws SerException {
         Session session = null;
         Client client = ChatSession.get(userId);
         if (null != client) {
@@ -110,7 +130,7 @@ public class ChatSerImpl implements IChatSer {
                 } catch (IOException e) {
                     throw new SerException(e.getMessage());
                 }
-            }else {
+            } else {
                 msgSer.save(msgs);
             }
         } else { //消息未推送
@@ -118,5 +138,24 @@ public class ChatSerImpl implements IChatSer {
             msgSer.save(msgs);
         }
     }
+
+    private void sendLineMsg(Msg msg) throws SerException {
+        FriendDTO dto = new FriendDTO();
+        dto.getConditions().add(Restrict.eq("userId", msg.getUserId()));
+        dto.getConditions().add(Restrict.eq("applyType",1));
+        List<Friend> friends = friendSer.findByCis(dto);
+        for (Friend friend : friends) {
+            Client client = ChatSession.get(friend.getUserId());
+            if (null != client && client.getSession().isOpen()) {
+                try {
+                    client.getSession().getBasicRemote().sendText(JSON.toJSONString(msg));
+                } catch (IOException e) {
+                    throw new SerException(e.getMessage());
+                }
+            }
+        }
+
+    }
+
 
 }

@@ -1,12 +1,12 @@
 package com.bjike.dao;
 
+import com.bjike.common.exception.RepException;
+import com.bjike.common.util.PrimitiveUtil;
 import com.bjike.dto.BaseDTO;
 import com.bjike.dto.Condition;
 import com.bjike.entity.BaseEntity;
-import com.bjike.common.exception.RepException;
 import com.bjike.type.RepExceptionType;
 import com.bjike.type.RestrictionType;
-import com.bjike.common.util.PrimitiveUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
@@ -208,7 +208,7 @@ public class JpaSpecification<BE extends BaseEntity, BD extends BaseDTO> impleme
             for (int i = 0; i < fields_length; i++) {
                 String entityName = fields[i];
                 String last = entityName.substring(entityName.length() - 3, entityName.length());
-                if (i == 0) {
+                if (0 == i) {
                     if ("Set".equals(last)) {
                         join = root.joinSet(entityName, JoinType.LEFT);
                     } else if ("List".equals(last)) {

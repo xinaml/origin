@@ -2,19 +2,18 @@ package com.bjike.type.chat;
 
 /**
  * @Author: [liguiqin]
- * @Date: [2017-07-19 14:38]
+ * @Date: [2017-07-22 09:46]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public enum  MsgType {
-    SYS(0), //系统
-    POINT(1),//点对点
-    GROUP(2),//群发
-    ONLINE(3),//上线通知
-    OFFLINE(4),;//下线通知
+public enum ApplyType {
+    APPLY(0), //申请状态
+    PASS(1),//通过
+    REFUSE(2),;//拒绝
     private int value;
-    MsgType(int value) {
+
+    ApplyType(int value) {
         this.value = value;
     }
 

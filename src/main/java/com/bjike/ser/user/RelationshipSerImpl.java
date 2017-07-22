@@ -18,7 +18,7 @@ import java.util.*;
  * @Copy: [com.bjike]
  */
 @Service
-public class FriendSerImpl implements IFriendSer {
+public class RelationshipSerImpl implements IRelationshipSer {
     @Autowired
     private ILikesSer likesSer;
     @Autowired

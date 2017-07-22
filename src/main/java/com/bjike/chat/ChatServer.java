@@ -6,6 +6,7 @@ import com.bjike.entity.chat.Client;
 import com.bjike.entity.chat.Msg;
 import com.bjike.ser.chat.IChatSer;
 import com.bjike.session.ChatSession;
+import com.bjike.type.chat.MsgType;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -30,9 +31,16 @@ public class ChatServer {
     @OnOpen
     public void join(@PathParam("userId") String userId, Session session) {
         try {
-            Client client = chatSer.initChatClient(userId, session);
-            if (null != client) {
-                ChatSession.put(userId, client); //更新刷新后的websocket session
+            boolean exists = chatSer.initClient(userId, session);
+            if (exists) {
+                //读取离线时未接收到的消息
+                chatSer.readOffLineMsg(userId);
+                //通知上线
+                Msg msg = new Msg();
+                msg.setMsgType(MsgType.ONLINE);
+                msg.setContent("上线通知");
+                msg.setUserId(userId);
+                chatSer.broadcast(msg, userId);
             }
         } catch (SerException e) {
             e.printStackTrace();
@@ -43,10 +51,16 @@ public class ChatServer {
 
     // OnClose，连接关闭时调用的方法
     @OnClose
-    public void quit(@PathParam("userId") String userId, CloseReason reason) {
+    public void quit(@PathParam("userId") String userId, CloseReason reason, Session session) throws Throwable {
         int code = reason.getCloseCode().getCode();
         if (code != 1000) {//刷新
+            Msg msg = new Msg();
+            msg.setMsgType(MsgType.OFFLINE);
+            msg.setContent("下线通知");
+            msg.setUserId(userId);
+            chatSer.broadcast(msg, userId);
             ChatSession.remove(userId);
+            session.close();
         }
 
 
@@ -63,7 +77,7 @@ public class ChatServer {
             msg.setContent(msg.getContent());
             msg.setSenderHeadPath(client.getHeadPath());
             msg.setSenderName(client.getUsername());
-            chatSer.broadcast(msg,userId);
+            chatSer.broadcast(msg, userId);
         }
     }
 
@@ -73,7 +87,12 @@ public class ChatServer {
         /**
          * 非正常关闭浏览器
          */
-        ChatSession.remove(userId);
+        Msg msg = new Msg();
+        msg.setMsgType(MsgType.OFFLINE);
+        msg.setContent("下线通知");
+        msg.setUserId(userId);
+        chatSer.broadcast(msg, userId);
+        session.close();
     }
 
 

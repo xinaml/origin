@@ -23,7 +23,7 @@ public interface IChatSer {
      * @return
      * @throws SerException
      */
-    default Client initChatClient(String userId, Session session) throws SerException {
+    default Boolean initClient(String userId, Session session) throws SerException {
         return null;
     }
 

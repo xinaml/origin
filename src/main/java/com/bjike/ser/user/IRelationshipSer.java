@@ -11,7 +11,7 @@ import com.bjike.entity.user.User;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IFriendSer {
+public interface IRelationshipSer {
     default Relationship search(String name, String userId)throws SerException{
         return null;
     }
