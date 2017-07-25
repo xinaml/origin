@@ -26,6 +26,10 @@ public class ChatAct {
     @ResponseBody
     public Result online() {
         List<Client> chatClients = new ArrayList<>();
+        Client c = new Client();
+        c.setHeadPath("xx");
+        c.setUsername("阿斯大赛");
+        chatClients.add(c);
         return ActResult.initialize(chatClients);
     }
 
