@@ -42,6 +42,14 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
     }
 }
+def env = hasProperty("pro") ? "pro" : (hasProperty("dev") ? "dev" : null)
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources", "src/main/profile/$env"]
+        }
+    }
+}
 
 configure(install.repositories.mavenInstaller) {
     pom.project {
