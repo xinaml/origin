@@ -6,7 +6,10 @@ import com.bjike.dto.chat.GroupDTO;
 import com.bjike.entity.chat.Group;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.GroupTO;
+import com.bjike.vo.chat.FriendVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author: [liguiqin]
@@ -31,4 +34,12 @@ public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements IGroup
             super.update(group);
         }
     }
+
+    @Override
+    public List<Group> listByUser(String userId) throws SerException {
+
+        return null;
+    }
+
+
 }

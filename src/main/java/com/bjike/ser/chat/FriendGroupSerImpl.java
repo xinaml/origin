@@ -5,9 +5,11 @@ import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.chat.FriendGroupDTO;
 import com.bjike.entity.chat.Client;
+import com.bjike.entity.chat.Friend;
 import com.bjike.entity.chat.FriendGroup;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.FriendGroupTO;
+import com.bjike.vo.chat.FriendVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

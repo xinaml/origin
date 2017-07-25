@@ -3,7 +3,6 @@ package com.bjike.ser.chat;
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.chat.FriendDTO;
 import com.bjike.entity.chat.Friend;
-import com.bjike.entity.chat.FriendGroup;
 import com.bjike.ser.Ser;
 import com.bjike.to.chat.FriendTO;
 import com.bjike.type.chat.ApplyType;
@@ -31,7 +30,52 @@ public interface IFriendSer extends Ser<Friend, FriendDTO> {
     }
 
     /**
-     * 朋友列表
+     * 添加好友
+     * @param to
+     * @throws SerException
+     */
+    default void add(FriendTO to) throws SerException {
+    }
+
+    /**
+     * 删除好友
+     * @param friendId
+     * @param userId
+     * @throws SerException
+     */
+    default void delete(String friendId, String userId) throws SerException {
+    }
+
+    /**
+     * 更改备注
+     * @param friendId
+     * @param remark
+     * @param userId
+     * @throws SerException
+     */
+    default void editRemark(String friendId, String remark, String userId) throws SerException {
+
+    }
+
+    /**
+     * 同意好友申请
+     * @param friendId
+     * @param userId
+     * @throws SerException
+     */
+    default void agree(String friendId, String userId) throws SerException {
+    }
+
+    /**
+     * 拒绝好友申请
+     * @param friendId
+     * @param userId
+     * @throws SerException
+     */
+    default void refuse(String friendId, String userId) throws SerException {
+    }
+    /**
+     * 用户所有朋友列表
      *
      * @param userId
      * @throws SerException
@@ -40,21 +84,37 @@ public interface IFriendSer extends Ser<Friend, FriendDTO> {
         return null;
     }
 
-    default void add(FriendTO to) throws SerException {
-    }
 
-    default void delete(String friendId,String userId) throws SerException {
-    }
-
-    default void editRemark(String friendId,String remark,String userId) throws SerException {
-
-    }
-
-    default void agree(String friendId,String userId) throws SerException {
-    }
-    default void refuse(String friendId,String userId) throws SerException {
-    }
+    /**
+     * 好友类型查询列表
+     * @param type
+     * @param userId
+     * @return
+     * @throws SerException
+     */
     default List<FriendVO> findByApplyType(ApplyType type, String userId) throws SerException {
-        return  null;
+        return null;
     }
+
+    /**
+     * 通过群id查询成员
+     *
+     * @param groupId
+     * @return
+     * @throws SerException
+     */
+    default List<FriendVO> groupMember(String groupId) throws SerException {
+        return null;
+    }
+
+    /**
+     * 朋友分组成员
+     * @param id
+     * @return
+     * @throws SerException
+     */
+    default List<FriendVO> friendGroup(String id) throws SerException {
+        return null;
+    }
+
 }

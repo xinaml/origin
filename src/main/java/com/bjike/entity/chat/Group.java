@@ -24,7 +24,10 @@ public class Group extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(36) COMMENT '创建人' ", nullable = false)
     private String userId;//创建人
 
-    @Column(columnDefinition = "VARCHAR(500) COMMENT '群描述' ", nullable = false)
+    @Column(columnDefinition = "VARCHAR(200) COMMENT '群头像' ")
+    private String headPath;//群头像
+
+    @Column(columnDefinition = "VARCHAR(500) COMMENT '群描述' ")
     private String description;//群描述
 
     public String getName() {
@@ -41,6 +44,14 @@ public class Group extends BaseEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getHeadPath() {
+        return headPath;
+    }
+
+    public void setHeadPath(String headPath) {
+        this.headPath = headPath;
     }
 
     public String getDescription() {

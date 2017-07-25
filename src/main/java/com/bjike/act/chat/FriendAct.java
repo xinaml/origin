@@ -32,7 +32,7 @@ public class FriendAct {
     private IFriendSer friendSer;
 
     /**
-     * 好友分组成员
+     * 所有好友成员
      *
      * @return
      * @throws ActException
@@ -47,6 +47,60 @@ public class FriendAct {
             throw new ActException(e.getMessage());
         }
 
+    }
+
+    /**
+     * 好友申请,拒绝列表
+     *
+     * @param type
+     * @return
+     * @throws ActException
+     */
+    @RequestMapping(value = "/type/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Result findByApplyType(ApplyType type, HttpServletRequest request) throws ActException {
+        try {
+            String userId = request.getHeader("userId");
+            return ActResult.initialize(friendSer.findByApplyType(type, userId));
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 群成员
+     *
+     * @param groupId
+     * @return
+     * @throws ActException
+     */
+    @RequestMapping(value = "/group/member/{groupId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result groupMember(@PathVariable String groupId, HttpServletRequest request) throws ActException {
+        try {
+            String userId = request.getHeader("userId");
+            return ActResult.initialize(friendSer.groupMember(groupId));
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 好友分组成员
+     *
+     * @param id
+     * @return
+     * @throws ActException
+     */
+    @RequestMapping(value = "/friend/group/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result friendGroup(@PathVariable String id, HttpServletRequest request) throws ActException {
+        try {
+            String userId = request.getHeader("userId");
+            return ActResult.initialize(friendSer.friendGroup(id));
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
     }
 
     /**
@@ -169,22 +223,5 @@ public class FriendAct {
         }
     }
 
-    /**
-     * 好友申请,拒绝列表
-     *
-     * @param type
-     * @return
-     * @throws ActException
-     */
-    @RequestMapping(value = "/type/list", method = RequestMethod.GET)
-    @ResponseBody
-    public Result editNickname(ApplyType type, HttpServletRequest request) throws ActException {
-        try {
-            String userId = request.getHeader("userId");
-            return ActResult.initialize(friendSer.findByApplyType(type, userId));
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
 
 }

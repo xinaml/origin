@@ -10,6 +10,8 @@ import com.bjike.to.chat.GroupTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 群操作
  *
@@ -26,6 +28,20 @@ public class GroupAct {
 
     @Autowired
     private IGroupSer groupSer;
+
+    @RequestMapping(value = "user/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Result listByUser(HttpServletRequest request) throws ActException {
+        try {
+            String userId = request.getHeader("userId");
+            groupSer.listByUser(userId);
+            return ActResult.initialize("add success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
@@ -52,7 +68,7 @@ public class GroupAct {
 
     @RequestMapping(value = "edit", method = RequestMethod.PUT)
     @ResponseBody
-    public Result edit(GroupTO to) throws ActException{
+    public Result edit(GroupTO to) throws ActException {
         try {
             groupSer.edit(to);
             return ActResult.initialize("edit success");

@@ -5,6 +5,9 @@ import com.bjike.dto.chat.GroupDTO;
 import com.bjike.entity.chat.Group;
 import com.bjike.ser.Ser;
 import com.bjike.to.chat.GroupTO;
+import com.bjike.vo.chat.FriendVO;
+
+import java.util.List;
 
 /**
  * @Author: [liguiqin]
@@ -15,12 +18,33 @@ import com.bjike.to.chat.GroupTO;
  */
 public interface IGroupSer extends Ser<Group, GroupDTO> {
 
-    default void add(GroupTO to) throws SerException{
+    /**
+     * 创建群
+     * @param to
+     * @throws SerException
+     */
+    default void add(GroupTO to) throws SerException {
 
     }
 
-
-    default void edit(GroupTO to) throws SerException{
+    /**
+     * 编辑群
+     * @param to
+     * @throws SerException
+     */
+    default void edit(GroupTO to) throws SerException {
 
     }
+
+    /**
+     * 查询某用户所有群
+     * @param userId
+     * @return
+     * @throws SerException
+     */
+    default List<Group> listByUser(String userId) throws SerException {
+        return null;
+    }
+
+
 }

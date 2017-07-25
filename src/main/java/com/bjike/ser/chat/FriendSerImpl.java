@@ -156,4 +156,23 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements IFr
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId","applyType"});
         return friendVOS;
     }
+
+    @Override
+    public List<FriendVO> groupMember(String groupId) throws SerException {
+        String sql ="select *  from(select c.tu_id as id,c.nickname,b.remark,d.avatar_image as headPath,a.id as groupId from "+
+                "ike_chat_group a left join ike_chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='"+groupId+"'"+
+                "left join ike_user c on c.tu_id=b.user_id left join ike_avatar d on c.avatar_id=d.avatar_id)a";
+        List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "groupId"});
+        return friendVOS;
+    }
+
+    @Override
+    public List<FriendVO> friendGroup(String id) throws SerException {
+        String sql="select *  from(select c.nickname,b.remark,d.avatar_image as headPath,a.id as friendGroupId from "+
+                " ike_chat_friend_group a left join ike_chat_friend b on a.user_id=b.user_id and b.apply_type=1 "+
+                " left join ike_user c on c.tu_id=b.user_id left join ike_avatar d on c.avatar_id=d.avatar_id)a where a.friendGroupId" +
+                "='"+id+"'";
+        return super.findBySql(sql, FriendVO.class,new String[]{"nickname","remark","headPath","friendGroupId"});
+
+    }
 }
