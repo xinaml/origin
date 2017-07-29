@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bjike.common.exception.SerException;
 import com.bjike.entity.chat.Client;
 import com.bjike.entity.chat.Msg;
-import com.bjike.ser.chat.IChatSer;
+import com.bjike.ser.chat.ChatSer;
 import com.bjike.session.ChatSession;
 import com.bjike.type.chat.MsgType;
 import org.springframework.stereotype.Component;
@@ -23,8 +23,9 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/chat/{userId}", configurator = GetHttpSessionConfigurator.class)
 @Component
 public class ChatServer {
-    private static final int MAX_SIZE = 1024 * 1024 * 1024;
-    public static IChatSer chatSer;
+    private static final int MAX_SIZE = 1024 * 10;
+    private static final int TIMEOUT = 60 * 10 * 10;
+    public static ChatSer chatSer;
 
 
     // OnPen，连接创建时调用的方法
@@ -40,7 +41,7 @@ public class ChatServer {
                 msg.setMsgType(MsgType.ONLINE);
                 msg.setContent("上线通知");
                 msg.setUserId(userId);
-                chatSer.broadcast(msg, userId);
+                chatSer.broadcast(msg);
             }
         } catch (SerException e) {
             e.printStackTrace();
@@ -58,7 +59,7 @@ public class ChatServer {
             msg.setMsgType(MsgType.OFFLINE);
             msg.setContent("下线通知");
             msg.setUserId(userId);
-            chatSer.broadcast(msg, userId);
+            chatSer.broadcast(msg);
             ChatSession.remove(userId);
             session.close();
         }
@@ -69,15 +70,16 @@ public class ChatServer {
     // OnMessage，传输信息过程中调用的方法
     @OnMessage
     public void incoming(@PathParam("userId") String userId, String content, Session session) throws SerException {
-        session.setMaxTextMessageBufferSize(MAX_SIZE);
+        session.setMaxTextMessageBufferSize(MAX_SIZE); //调大导致内存溢出
         Msg msg = JSON.parseObject(content, Msg.class);
         Client client = ChatSession.get(userId);
+        client.setSession(session);
         if (null != client) {
             content.replaceAll("操", "*");
             msg.setContent(msg.getContent());
             msg.setSenderHeadPath(client.getHeadPath());
             msg.setSenderName(client.getUsername());
-            chatSer.broadcast(msg, userId);
+            chatSer.broadcast(msg);
         }
     }
 
@@ -91,7 +93,7 @@ public class ChatServer {
         msg.setMsgType(MsgType.OFFLINE);
         msg.setContent("下线通知");
         msg.setUserId(userId);
-        chatSer.broadcast(msg, userId);
+        chatSer.broadcast(msg);
         session.close();
     }
 

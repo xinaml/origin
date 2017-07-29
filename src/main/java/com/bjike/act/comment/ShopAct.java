@@ -8,7 +8,7 @@ import com.bjike.common.restful.Result;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.ShopDTO;
 import com.bjike.entity.comment.Shop;
-import com.bjike.ser.comment.IShopSer;
+import com.bjike.ser.comment.ShopSer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("shop")
 public class ShopAct {
     @Autowired
-    private IShopSer shopSer;
+    private ShopSer shopSer;
 
     /**
      * 附近店铺

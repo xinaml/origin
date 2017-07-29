@@ -16,7 +16,7 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IFriendGroupSer extends Ser<FriendGroup, FriendGroupDTO> {
+public interface FriendGroupSer extends Ser<FriendGroup, FriendGroupDTO> {
 
 
 

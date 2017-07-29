@@ -36,13 +36,13 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 @Service
-public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements ICommentSer {
+public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements CommentSer {
     @Autowired
-    private IShopSer shopSer;
+    private ShopSer shopSer;
     @Autowired
-    private IPictureSer pictureSer;
+    private PictureSer pictureSer;
     @Autowired
-    private ILikesSer likesSer;
+    private LikesSer likesSer;
     @Autowired
     private IUserSer userSer;
 

@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by lgq on 16/9/3.
  */
-public interface IRep<Entity extends BaseEntity, Dto extends BaseDTO> {
+public interface Rep<Entity extends BaseEntity, Dto extends BaseDTO> {
 
 
     /**

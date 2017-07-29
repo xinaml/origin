@@ -6,7 +6,6 @@ import com.bjike.dto.chat.GroupDTO;
 import com.bjike.entity.chat.Group;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.GroupTO;
-import com.bjike.vo.chat.FriendVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 @Service
-public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements IGroupSer {
+public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements GroupSer {
     @Override
     public void add(GroupTO to) throws SerException {
         Group group = BeanCopy.copyProperties(to, Group.class);

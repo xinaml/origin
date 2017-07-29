@@ -27,7 +27,7 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 @Service
-public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements IFriendSer {
+public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements FriendSer {
 
     @Autowired
     private IUserSer userSer;

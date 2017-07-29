@@ -18,7 +18,7 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IFriendSer extends Ser<Friend, FriendDTO> {
+public interface FriendSer extends Ser<Friend, FriendDTO> {
     /**
      * 组信息
      *

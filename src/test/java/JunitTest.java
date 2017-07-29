@@ -1,17 +1,14 @@
 import com.alibaba.fastjson.JSON;
 import com.bjike.Application;
-import com.bjike.common.config.InitBeans;
 import com.bjike.common.exception.SerException;
 import com.bjike.entity.comment.Shop;
-import com.bjike.ser.comment.IShopSer;
+import com.bjike.ser.comment.ShopSer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ import java.util.List;
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class JunitTest {
     @Autowired
-    private IShopSer shopSer;
+    private ShopSer shopSer;
 
     @Test
     public void select()throws SerException{

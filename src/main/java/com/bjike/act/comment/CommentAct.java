@@ -11,7 +11,7 @@ import com.bjike.common.util.date.DateUtil;
 import com.bjike.common.util.file.FileUtil;
 import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.comment.Comment;
-import com.bjike.ser.comment.ICommentSer;
+import com.bjike.ser.comment.CommentSer;
 import com.bjike.to.comment.CommentTO;
 import com.bjike.vo.comment.CommentDetailsVO;
 import com.bjike.vo.comment.CommentVO;
@@ -38,7 +38,7 @@ import java.util.List;
 @RequestMapping("comment")
 public class CommentAct {
     @Autowired
-    private ICommentSer commentSer;
+    private CommentSer commentSer;
 
     /**
      * 添加点评

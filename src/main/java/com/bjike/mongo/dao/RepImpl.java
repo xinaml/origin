@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * Created by lgq on 16/9/3.
  */
-public class RepImpl<Entity extends BaseEntity, Dto extends BaseDTO> implements IRep<Entity, Dto> {
+public class RepImpl<Entity extends BaseEntity, Dto extends BaseDTO> implements Rep<Entity, Dto> {
 
     @Autowired
     protected MongoTemplate mongoTemplate;

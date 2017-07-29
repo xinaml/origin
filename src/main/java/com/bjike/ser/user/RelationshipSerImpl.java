@@ -4,7 +4,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.entity.user.FriendChain;
 import com.bjike.entity.user.Relationship;
 import com.bjike.entity.user.User;
-import com.bjike.ser.comment.ILikesSer;
+import com.bjike.ser.comment.LikesSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.*;
 @Service
 public class RelationshipSerImpl implements IRelationshipSer {
     @Autowired
-    private ILikesSer likesSer;
+    private LikesSer likesSer;
     @Autowired
     private IUserSer userSer;
 

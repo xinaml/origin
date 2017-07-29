@@ -13,7 +13,7 @@ import javax.websocket.Session;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IChatSer {
+public interface ChatSer {
 
     /**
      * 初始化客户端
@@ -31,10 +31,9 @@ public interface IChatSer {
      * 推送消息
      *
      * @param msg
-     * @param senderId 发送人
      * @throws SerException
      */
-    default void broadcast(Msg msg,String senderId) throws SerException {
+    default void broadcast(Msg msg) throws SerException {
 
     }
 

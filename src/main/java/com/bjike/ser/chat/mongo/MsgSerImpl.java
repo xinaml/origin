@@ -2,7 +2,7 @@ package com.bjike.ser.chat.mongo;
 
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Msg;
-import com.bjike.mongo.service.MoGoServiceImpl;
+import com.bjike.mongo.service.MoGoSerImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,5 +13,5 @@ import org.springframework.stereotype.Service;
  * @Copy: [com.bjike]
  */
 @Service
-public class MsgSerImpl extends MoGoServiceImpl<Msg, MsgDTO> implements IMsgSer {
+public class MsgSerImpl extends MoGoSerImpl<Msg, MsgDTO> implements MsgSer {
 }

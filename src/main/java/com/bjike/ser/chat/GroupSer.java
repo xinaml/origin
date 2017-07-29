@@ -16,7 +16,7 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IGroupSer extends Ser<Group, GroupDTO> {
+public interface GroupSer extends Ser<Group, GroupDTO> {
 
     /**
      * 创建群

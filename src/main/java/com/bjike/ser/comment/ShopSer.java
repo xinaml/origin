@@ -15,7 +15,7 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IShopSer extends Ser<Shop, ShopDTO> {
+public interface ShopSer extends Ser<Shop, ShopDTO> {
     /**
      * 添加店铺
      *

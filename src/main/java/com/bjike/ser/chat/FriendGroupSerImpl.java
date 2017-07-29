@@ -4,15 +4,10 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.chat.FriendGroupDTO;
-import com.bjike.entity.chat.Client;
-import com.bjike.entity.chat.Friend;
 import com.bjike.entity.chat.FriendGroup;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.FriendGroupTO;
-import com.bjike.vo.chat.FriendVO;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @Author: [liguiqin]
@@ -22,7 +17,7 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 @Service
-public class FriendGroupSerImpl extends ServiceImpl<FriendGroup, FriendGroupDTO> implements IFriendGroupSer {
+public class FriendGroupSerImpl extends ServiceImpl<FriendGroup, FriendGroupDTO> implements FriendGroupSer {
 
     @Override
     public void add(FriendGroupTO to) throws SerException {

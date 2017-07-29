@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import java.util.List;
 
 
-public interface IMoGoService<Entity extends BaseEntity, Dto extends BaseDTO> {
+public interface MoGoSer<Entity extends BaseEntity, Dto extends BaseDTO> {
 
     /**
      * 查询所有数据

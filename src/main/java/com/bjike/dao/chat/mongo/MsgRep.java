@@ -2,7 +2,7 @@ package com.bjike.dao.chat.mongo;
 
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Msg;
-import com.bjike.mongo.dao.IRep;
+import com.bjike.mongo.dao.Rep;
 
 /**
  * @Author: [liguiqin]
@@ -11,5 +11,5 @@ import com.bjike.mongo.dao.IRep;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface MsgRep extends IRep<Msg,MsgDTO>{
+public interface MsgRep extends Rep<Msg,MsgDTO> {
 }

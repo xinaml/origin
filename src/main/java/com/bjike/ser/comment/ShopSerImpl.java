@@ -3,7 +3,6 @@ package com.bjike.ser.comment;
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.comment.ShopDTO;
 import com.bjike.entity.comment.Shop;
-import com.bjike.entity.user.User;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.vo.comment.ShopVO;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.List;
  * @Copy: [com.bjike]
  */
 @Service
-public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements IShopSer {
+public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements ShopSer {
     @Transactional
     @Override
     public Shop add(Shop shop) throws SerException {
@@ -42,8 +41,8 @@ public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements IShopSer 
         double maxlat = latitude+dlat;
         double minlng = longitude -dlng;
         double maxlng = longitude + dlng;
-        String sql = "select id,name,seq,point_id,pointX,pointY from ike_shop where pointY>="+minlat+" and pointY <="+maxlat+" and pointX<="+minlng+" and pointX>="+maxlng;
-        List<ShopVO> vos = super.findBySql(sql,ShopVO.class,new String[]{"id","name","seq","pointId","pointX","pointY"});
+        String sql = "select id,name,seq,point_id,pointX,pointY,address from ike_shop where pointY>="+minlat+" and pointY <="+maxlat+" and pointX<="+minlng+" and pointX>="+maxlng;
+        List<ShopVO> vos = super.findBySql(sql,ShopVO.class,new String[]{"id","name","seq","pointId","pointX","pointY","address"});
         for(ShopVO shop: vos){
             sql = "select  c.avatar_image as headPath from ike_comment a,ike_user b,ike_avatar c where a.shop_id='"+shop.getId()+"' and a.user_id=b.tu_id and c.avatar_id=b.avatar_id order by b.experience desc  LIMIT 0,3";
             List<Object> ob_images =  super.findBySql(sql);

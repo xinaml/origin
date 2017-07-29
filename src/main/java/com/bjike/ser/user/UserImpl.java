@@ -2,7 +2,7 @@ package com.bjike.ser.user;
 
 import com.bjike.common.exception.SerException;
 import com.bjike.entity.user.User;
-import com.bjike.ser.comment.ILikesSer;
+import com.bjike.ser.comment.LikesSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class UserImpl implements IUserSer {
 
     @Autowired
-    private ILikesSer likesSer;
+    private LikesSer likesSer;
 
     public User findById(String userId) throws SerException {
         String sql = "select a.tu_id ,b.avatar_image as headPath,a.nickname from ike_user a,ike_avatar b where" +

@@ -11,6 +11,6 @@ import com.bjike.ser.Ser;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface ILikesSer extends Ser<Likes, LikesDTO> {
+public interface LikesSer extends Ser<Likes, LikesDTO> {
 
 }

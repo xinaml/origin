@@ -5,7 +5,7 @@ import com.bjike.common.constant.FinalCommons;
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.BaseDTO;
 import com.bjike.entity.BaseEntity;
-import com.bjike.mongo.dao.IRep;
+import com.bjike.mongo.dao.Rep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 
@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * Created by lgq on 16/9/3.
  */
-public class MoGoServiceImpl<Entity extends BaseEntity, Dto extends BaseDTO> extends FinalCommons implements IMoGoService<Entity, Dto> {
+public class MoGoSerImpl<Entity extends BaseEntity, Dto extends BaseDTO> extends FinalCommons implements MoGoSer<Entity, Dto> {
 
     @Autowired
-    protected IRep<Entity, Dto> dao;
+    protected Rep<Entity, Dto> dao;
 
     @Override
     public List<Entity> findAll() throws SerException {

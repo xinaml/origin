@@ -2,7 +2,7 @@ package com.bjike.ser.chat.mongo;
 
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Msg;
-import com.bjike.mongo.service.IMoGoService;
+import com.bjike.mongo.service.MoGoSer;
 
 /**
  * @Author: [liguiqin]
@@ -11,5 +11,5 @@ import com.bjike.mongo.service.IMoGoService;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IMsgSer extends IMoGoService<Msg,MsgDTO>{
+public interface MsgSer extends MoGoSer<Msg,MsgDTO> {
 }

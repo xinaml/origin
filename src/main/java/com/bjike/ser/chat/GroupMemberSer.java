@@ -12,5 +12,5 @@ import com.bjike.ser.Ser;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IGroupMemberSer extends Ser<GroupMember, GroupMemberDTO> {
+public interface GroupMemberSer extends Ser<GroupMember, GroupMemberDTO> {
 }

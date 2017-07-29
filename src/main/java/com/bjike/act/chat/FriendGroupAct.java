@@ -5,9 +5,8 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.ser.chat.IFriendGroupSer;
+import com.bjike.ser.chat.FriendGroupSer;
 import com.bjike.to.chat.FriendGroupTO;
-import com.bjike.to.chat.GroupTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class FriendGroupAct {
 
     @Autowired
-    private IFriendGroupSer friendGroupSer;
+    private FriendGroupSer friendGroupSer;
 
     /**
      * 添加分组

@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @Copy: [com.bjike]
  */
 public class ChatSession {
-    private static final RuntimeException TOKEN_NOT_NULL = new RuntimeException("token令牌不能为空");
+    private static final RuntimeException TOKEN_NOT_NULL = new RuntimeException("userId不能为空");
     private static Logger logger = LoggerFactory.getLogger(ShareSession.class);
 
     private ChatSession() {
@@ -45,13 +45,13 @@ public class ChatSession {
     /**
      * 新增用户会话信息
      *
-     * @param token  令牌值
+     * @param userId 令牌值
      * @param client 登录用户信息
      * @return 是否已经登录
      */
-    public static void put(String token, Client client) {
-        if (StringUtils.isNotBlank(token)) {
-            CHAT_SESSION.put(token, client);
+    public static void put(String userId, Client client) {
+        if (StringUtils.isNotBlank(userId)) {
+            CHAT_SESSION.put(userId, client);
         } else {
             throw TOKEN_NOT_NULL;
         }
@@ -78,7 +78,9 @@ public class ChatSession {
     public static Client get(String userId) {
         try {
             if (StringUtils.isNotBlank(userId)) {
+
                 return CHAT_SESSION.get(userId);
+
             }
             throw TOKEN_NOT_NULL;
         } catch (Exception e) {

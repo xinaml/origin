@@ -1,9 +1,7 @@
 package com.bjike.ser.comment;
 
 import com.bjike.dto.comment.LikesDTO;
-import com.bjike.dto.comment.PictureDTO;
 import com.bjike.entity.comment.Likes;
-import com.bjike.entity.comment.Picture;
 import com.bjike.ser.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +13,6 @@ import org.springframework.stereotype.Service;
  * @Copy: [com.bjike]
  */
 @Service
-public class LikesSerImpl extends ServiceImpl<Likes, LikesDTO> implements ILikesSer {
+public class LikesSerImpl extends ServiceImpl<Likes, LikesDTO> implements LikesSer {
 
 }

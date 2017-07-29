@@ -5,7 +5,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.ser.chat.IGroupSer;
+import com.bjike.ser.chat.GroupSer;
 import com.bjike.to.chat.GroupTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GroupAct {
 
     @Autowired
-    private IGroupSer groupSer;
+    private GroupSer groupSer;
 
     @RequestMapping(value = "user/list", method = RequestMethod.GET)
     @ResponseBody

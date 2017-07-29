@@ -19,7 +19,7 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface ICommentSer extends Ser<Comment, CommentDTO> {
+public interface CommentSer extends Ser<Comment, CommentDTO> {
     /**
      * 添加评论
      *

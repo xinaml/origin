@@ -13,5 +13,5 @@ import org.springframework.stereotype.Service;
  * @Copy: [com.bjike]
  */
 @Service
-public class GroupMemberSerImpl extends ServiceImpl<GroupMember, GroupMemberDTO> implements IGroupMemberSer {
+public class GroupMemberSerImpl extends ServiceImpl<GroupMember, GroupMemberDTO> implements GroupMemberSer {
 }

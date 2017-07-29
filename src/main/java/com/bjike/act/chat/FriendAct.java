@@ -5,7 +5,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.ser.chat.IFriendSer;
+import com.bjike.ser.chat.FriendSer;
 import com.bjike.to.chat.FriendTO;
 import com.bjike.type.chat.ApplyType;
 import com.bjike.vo.chat.FriendGroupVO;
@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("chat/friend")
 public class FriendAct {
     @Autowired
-    private IFriendSer friendSer;
+    private FriendSer friendSer;
 
     /**
      * 所有好友成员
