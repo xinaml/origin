@@ -36,7 +36,7 @@ public class SmoothBurstyInterceptor extends HandlerInterceptorAdapter {
     private LimitType limitType = LimitType.DROP;
 
     public SmoothBurstyInterceptor() {
-        this.limiter = RateLimiter.create(10);
+        this.limiter = RateLimiter.create(100);
     }
 
     /**
