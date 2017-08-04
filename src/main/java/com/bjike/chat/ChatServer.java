@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: [liguiqin]
@@ -30,7 +32,7 @@ public class ChatServer {
 
     // OnPen，连接创建时调用的方法
     @OnOpen
-    public void join(@PathParam("userId") String userId, Session session) {
+    public void join(@PathParam("userId") String userId, Session session)  throws SerException{
         try {
             boolean exists = chatSer.initClient(userId, session);
             if (exists) {
@@ -45,6 +47,7 @@ public class ChatServer {
             }
         } catch (SerException e) {
             e.printStackTrace();
+            throw new SerException(e.getMessage());
         }
 
 

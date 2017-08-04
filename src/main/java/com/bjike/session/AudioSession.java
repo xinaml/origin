@@ -1,44 +1,42 @@
 package com.bjike.session;
 
 import com.bjike.common.exception.SerException;
-import com.bjike.entity.chat.Client;
 import com.google.common.cache.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.websocket.Session;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 聊天session管理
- *
+/**语音session管理
  * @Author: [liguiqin]
- * @Date: [2017-07-19 14:07]
+ * @Date: [2017-08-02 15:40]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class ChatSession {
+public class AudioSession {
     private static final RuntimeException TOKEN_NOT_NULL = new RuntimeException("userId不能为空");
     private static Logger logger = LoggerFactory.getLogger(ShareSession.class);
 
-    private ChatSession() {
+    private AudioSession() {
     }
 
-    private static final LoadingCache<String, Client> CHAT_SESSION = CacheBuilder.newBuilder()
-            .expireAfterWrite(7, TimeUnit.DAYS)
+    private static final LoadingCache<String, Session> AUDIO_SESSION = CacheBuilder.newBuilder()
+            .expireAfterWrite(5, TimeUnit.HOURS)
             .maximumSize(1000)
-            .removalListener(new RemovalListener<String, Client>() {
+            .removalListener(new RemovalListener<String, Session>() {
                 @Override
-                public void onRemoval(RemovalNotification<String, Client> notification) {
+                public void onRemoval(RemovalNotification<String, Session> notification) {
                     if (!notification.getCause().equals(RemovalCause.REPLACED)) {
                         logger.info("remove:" + notification.getKey());
                     }
                 }
             })
-            .build(new CacheLoader<String, Client>() {
+            .build(new CacheLoader<String, Session>() {
                 @Override
-                public Client load(String key) throws Exception {
+                public Session load(String key) throws Exception {
                     return null;
                 }
             });
@@ -47,13 +45,13 @@ public class ChatSession {
     /**
      * 新增用户会话信息
      *
-     * @param userId 令牌值
-     * @param client 登录用户信息
+     * @param userId  令牌值
+     * @param session 登录用户信息
      * @return 是否已经登录
      */
-    public static void put(String userId, Client client) {
+    public static void put(String userId, Session session) {
         if (StringUtils.isNotBlank(userId)) {
-            CHAT_SESSION.put(userId, client);
+            AUDIO_SESSION.put(userId, session);
         } else {
             throw TOKEN_NOT_NULL;
         }
@@ -69,7 +67,7 @@ public class ChatSession {
      */
     public static void remove(String userId) {
         if (StringUtils.isNotBlank(userId)) {
-            CHAT_SESSION.invalidate(userId);
+            AUDIO_SESSION.invalidate(userId);
         } else {
 
             throw TOKEN_NOT_NULL;
@@ -77,11 +75,11 @@ public class ChatSession {
     }
 
 
-    public static Client get(String userId) {
+    public static Session get(String userId) {
         try {
             if (StringUtils.isNotBlank(userId)) {
 
-                return CHAT_SESSION.get(userId);
+                return AUDIO_SESSION.get(userId);
 
             }
             throw TOKEN_NOT_NULL;
@@ -97,7 +95,7 @@ public class ChatSession {
      * @return 总数
      */
     public static long count() {
-        return CHAT_SESSION.size();
+        return AUDIO_SESSION.size();
     }
 
     /**
@@ -105,20 +103,19 @@ public class ChatSession {
      *
      * @return 会话信息集合
      */
-    public static LoadingCache<String, Client> sessions() {
-        if (null != CHAT_SESSION && CHAT_SESSION.size() > 0) {
-            return CHAT_SESSION;
+    public static LoadingCache<String, Session> sessions() {
+        if (null != AUDIO_SESSION && AUDIO_SESSION.size() > 0) {
+            return AUDIO_SESSION;
         }
         return null;
     }
 
     public static boolean exists(String userId) throws SerException {
         try {
-            return CHAT_SESSION.getUnchecked(userId) != null;
+            return AUDIO_SESSION.getUnchecked(userId) != null;
         } catch (Exception e) {
             return false;
         }
     }
-
 
 }

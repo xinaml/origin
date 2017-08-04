@@ -67,7 +67,7 @@ public class ShopAct {
             if (null != shop) {
                 shopSer.remove(shop);
             }
-            return ActResult.initialize("delete success");
+            return new ActResult("delete success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

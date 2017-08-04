@@ -37,7 +37,7 @@ public class FriendGroupAct {
     public Result add(FriendGroupTO to) throws ActException {
         try {
             friendGroupSer.add(to);
-            return ActResult.initialize("add success");
+            return new ActResult("add success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -56,7 +56,7 @@ public class FriendGroupAct {
     public Result delete(@PathVariable String id) throws ActException {
         try {
             friendGroupSer.remove(id);
-            return ActResult.initialize("delete sueecss");
+            return new ActResult("delete sueecss");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -74,7 +74,7 @@ public class FriendGroupAct {
     public Result edit(FriendGroupTO to) throws ActException {
         try {
             friendGroupSer.edit(to);
-            return ActResult.initialize("edit success");
+            return new ActResult("edit success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

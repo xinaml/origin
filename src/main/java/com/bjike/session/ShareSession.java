@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 用户登陆session管理类
+ * 摇一摇session管理类
  *
  * @Author: [liguiqin]
  * @Date: [2016-11-23 15:47]

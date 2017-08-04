@@ -50,8 +50,8 @@ public class FriendAct {
     }
 
     /**
-     * 好友申请,拒绝列表
      *
+     *好友类型查询列表
      * @param type
      * @return
      * @throws ActException
@@ -67,23 +67,6 @@ public class FriendAct {
         }
     }
 
-    /**
-     * 群成员
-     *
-     * @param groupId
-     * @return
-     * @throws ActException
-     */
-    @RequestMapping(value = "/group/member/{groupId}", method = RequestMethod.GET)
-    @ResponseBody
-    public Result groupMember(@PathVariable String groupId, HttpServletRequest request) throws ActException {
-        try {
-            String userId = request.getHeader("userId");
-            return ActResult.initialize(friendSer.groupMember(groupId));
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
 
     /**
      * 好友分组成员
@@ -92,7 +75,7 @@ public class FriendAct {
      * @return
      * @throws ActException
      */
-    @RequestMapping(value = "/friend/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/friendGroup/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result friendGroup(@PathVariable String id, HttpServletRequest request) throws ActException {
         try {
@@ -109,7 +92,7 @@ public class FriendAct {
      * @return
      * @throws ActException
      */
-    @RequestMapping(value = "group/info", method = RequestMethod.GET)
+    @RequestMapping(value = "friendGroup/info", method = RequestMethod.GET)
     @ResponseBody
     public Result groupInfo(HttpServletRequest request) throws ActException {
         try {
@@ -136,7 +119,7 @@ public class FriendAct {
             String userId = request.getHeader("userId");
             to.setUserId(userId);
             friendSer.add(to);
-            return ActResult.initialize("add success");
+            return new ActResult("apply success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -156,7 +139,7 @@ public class FriendAct {
         try {
             String userId = request.getHeader("userId");
             friendSer.agree(friendId, userId);
-            return ActResult.initialize("agree success");
+            return new ActResult("agree success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -176,7 +159,7 @@ public class FriendAct {
         try {
             String userId = request.getHeader("userId");
             friendSer.refuse(friendId, userId);
-            return ActResult.initialize("refuse success");
+            return new ActResult("refuse success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -191,13 +174,13 @@ public class FriendAct {
      * @return
      * @throws ActException
      */
-    @RequestMapping(value = "delete/friendId", method = RequestMethod.DELETE)
+    @RequestMapping(value = "delete/{friendId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Result delete(@PathVariable String friendId, HttpServletRequest request) throws ActException {
         try {
             String userId = request.getHeader("userId");
             friendSer.delete(friendId, userId);
-            return ActResult.initialize("delete success");
+            return new ActResult("delete success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -217,7 +200,7 @@ public class FriendAct {
         try {
             String userId = request.getHeader("userId");
             friendSer.editRemark(friendId, nickname, userId);
-            return ActResult.initialize("remark success");
+            return new ActResult("remark success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

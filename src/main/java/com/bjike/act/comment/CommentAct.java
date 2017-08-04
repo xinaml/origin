@@ -115,7 +115,7 @@ public class CommentAct {
                 userId = request.getHeader("userId");
             }
             commentSer.like(commentId, userId);
-            return ActResult.initialize("success");
+            return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -135,7 +135,7 @@ public class CommentAct {
                 userId = request.getHeader("userId");
             }
             commentSer.cancelLike(commentId, userId);
-            return ActResult.initialize("success");
+            return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -154,7 +154,7 @@ public class CommentAct {
     public Result delete(@PathVariable String commentId) throws ActException {
         try {
             commentSer.remove(commentId);
-            return ActResult.initialize("success");
+            return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -190,7 +190,7 @@ public class CommentAct {
         try {
             List<File> files = FileUtil.save(request, getCommentPath(request.getHeader("userId")));
             commentSer.uploadImg(commentId, files);
-            return ActResult.initialize("success");
+            return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

@@ -5,6 +5,8 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
+import com.bjike.entity.chat.Friend;
+import com.bjike.ser.chat.FriendSer;
 import com.bjike.ser.chat.GroupSer;
 import com.bjike.to.chat.GroupTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,33 @@ public class GroupAct {
     @Autowired
     private GroupSer groupSer;
 
+    @Autowired
+    private FriendSer friendSer;
+    /**
+     * 群成员
+     *
+     * @param groupId
+     * @return
+     * @throws ActException
+     */
+    @RequestMapping(value = "member/{groupId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result groupMember(@PathVariable String groupId, HttpServletRequest request) throws ActException {
+        try {
+            String userId = request.getHeader("userId");
+            return ActResult.initialize(friendSer.groupMember(groupId));
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "user/list", method = RequestMethod.GET)
     @ResponseBody
     public Result listByUser(HttpServletRequest request) throws ActException {
         try {
             String userId = request.getHeader("userId");
             groupSer.listByUser(userId);
-            return ActResult.initialize("add success");
+            return new ActResult("add success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -48,7 +70,7 @@ public class GroupAct {
     public Result add(GroupTO to) throws ActException {
         try {
             groupSer.add(to);
-            return ActResult.initialize("add success");
+            return new ActResult("add success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -60,7 +82,7 @@ public class GroupAct {
     public Result delete(@PathVariable String id) throws ActException {
         try {
             groupSer.remove(id);
-            return ActResult.initialize("delete sueecss");
+            return new ActResult("delete sueecss");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -71,7 +93,7 @@ public class GroupAct {
     public Result edit(GroupTO to) throws ActException {
         try {
             groupSer.edit(to);
-            return ActResult.initialize("edit success");
+            return new ActResult("edit success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

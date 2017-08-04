@@ -58,26 +58,26 @@ public class ActionExceptionHandler extends AbstractHandlerExceptionResolver {
     }
 
     private String handleJapException(Exception throwable) {
-        String str = null;
+        String msg = null;
         Throwable tb = throwable.getCause();
         if (null != tb) {
-            str = tb.getCause().getMessage();
-            if (str.startsWith("Column")) {
-                str = str.replaceAll("Column", "列");
-                str = str.replaceAll("cannot be null", "不能为空!");
-                return str;
+            msg = tb.getCause().getMessage();
+            if (msg.startsWith("Column")) {
+                msg = msg.replaceAll("Column", "列");
+                msg = msg.replaceAll("cannot be null", "不能为空!");
+                return msg;
             }
-            if (str.startsWith("Duplicate entry")) {
-                str = StringUtils.substringAfter(str, "Duplicate entry");
-                str = StringUtils.substringBefore(str, "for key");
-                return str + "已被占用!";
+            if (msg.startsWith("Duplicate entry")) {
+                msg = StringUtils.substringAfter(msg, "Duplicate entry");
+                msg = StringUtils.substringBefore(msg, "for key");
+                return msg + "已被占用!";
             }
-            if (str.startsWith("Data truncation")) {
-                str = StringUtils.substringAfter(str, "Data too long for column");
-                str = StringUtils.substringBefore(str, "at row");
-                return str + "超出数据长度!";
+            if (msg.startsWith("Data truncation")) {
+                msg = StringUtils.substringAfter(msg, "Data too long for column");
+                msg = StringUtils.substringBefore(msg, "at row");
+                return msg + "超出数据长度!";
             }
         }
-        return str;
+        return msg;
     }
 }

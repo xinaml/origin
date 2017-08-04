@@ -19,7 +19,7 @@
 
 
 <script type="text/javascript">
-    var socketUrl = "ws" + '://https://sqlm.issp.bjike.com:8080/chat/13160877272';
+    var socketUrl = "ws" + '://'+window.location.host+'/chat/13160877272';
     var webSocket = new WebSocket(socketUrl);
 
     webSocket.onerror = function (event) {
