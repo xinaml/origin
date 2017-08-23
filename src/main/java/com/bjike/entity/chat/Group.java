@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "ike_chat_group")
+@Table(name = "chat_group")
 public class Group extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(36) COMMENT '聊天室名称' ", nullable = false)
     private String name;

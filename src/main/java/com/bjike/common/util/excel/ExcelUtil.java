@@ -1,8 +1,8 @@
 package com.bjike.common.util.excel;
 
 import com.bjike.common.exception.ActException;
-import com.bjike.common.util.ClazzUtil;
-import com.bjike.common.util.DataTypeUtil;
+import com.bjike.common.util.clazz.ClazzUtil;
+import com.bjike.common.util.clazz.DataTypeUtil;
 import com.bjike.common.util.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;

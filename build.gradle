@@ -1,38 +1,22 @@
-
-group 'com.bjike'
-version '1.0'
-apply plugin: 'maven'
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-apply from: 'config.gradle'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-}
-
-compileJava {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-}
-
-
-
 buildscript {
-
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+    }
     repositories {
-        mavenLocal()
         mavenCentral()
-        jcenter()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+version = '0.0.1-SNAPSHOT'
+apply from: 'config.gradle'
+sourceCompatibility = 1.8
 
 
 jar {
@@ -51,42 +35,35 @@ task copyJars(type: Copy) {
 }
 build.dependsOn copyJars
 
-def env = hasProperty("pro") ? "pro" : (hasProperty("dev") ? "dev" : null)
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/resources", "src/main/profile/$env"]
-        }
-    }
+repositories {
+    mavenCentral()
 }
 
 
+ext {
+    springCloudVersion = 'Dalston.SR2'
+}
+
 dependencies {
-    //    test
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-websocket')
+    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+    //----------------
     testCompile group: 'junit', name: 'junit', version: "$junit_version"
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
-
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$spring_boot_starter_web_version"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "$spring_boot_starter_jdbc_version"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$spring_boot_starter_data_jpa"
-    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version:"$spring_boot_autoconfigur_version"
-    compile group: 'mysql', name: 'mysql-connector-java', version: "$mysql_connector_version"
-    compile group: 'com.alibaba', name: 'druid', version: "$druid_version"
-
     //commons
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: "$javax_servlet_version"
+    compile group: 'mysql', name: 'mysql-connector-java', version: "$mysql_connector_version"
     compile group: 'org.apache.commons', name: 'commons-lang3', version: "$commons_lang_version"
-    compile group: 'commons-io', name: 'commons-io', version: "$commons_io_version"
     compile group: 'com.alibaba', name: 'fastjson', version: "$fastjson_version"
     compile group: 'com.google.guava', name: 'guava', version: "$guava_version"
     compile group: 'net.coobird', name: 'thumbnailator', version: "$thumbnailator_version"
-
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclient_version"
     // poi
     compile group: 'org.apache.poi', name: 'poi', version: "$poi_version"
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: "$poi_version"
-    //websocket
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.4.RELEASE'
-    //mongo
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '1.5.4.RELEASE'
+    compile group: 'redis.clients', name: 'jedis', version: "$jedis_version"
 
 }
+

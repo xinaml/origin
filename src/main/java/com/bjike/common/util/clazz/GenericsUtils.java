@@ -1,4 +1,4 @@
-package com.bjike.common.util;
+package com.bjike.common.util.clazz;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

@@ -2,7 +2,7 @@ package com.bjike.common.util.bean;
 
 
 
-import com.bjike.common.util.ClazzUtil;
+import com.bjike.common.util.clazz.ClazzUtil;
 import com.bjike.common.util.date.DateUtil;
 
 import javax.servlet.http.HttpServletRequest;

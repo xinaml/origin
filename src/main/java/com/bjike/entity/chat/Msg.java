@@ -46,6 +46,12 @@ public class Msg extends BaseEntity{
      * 上下线用户
      */
     private String userId;
+
+    /**
+     * 是否为已读消息
+     */
+    private boolean read;
+
     public String getSenderName() {
         return senderName;
     }
@@ -108,5 +114,13 @@ public class Msg extends BaseEntity{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }

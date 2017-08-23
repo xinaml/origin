@@ -1,4 +1,4 @@
-package com.bjike.common.util;
+package com.bjike.common.util.clazz;
 
 import com.bjike.common.util.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;

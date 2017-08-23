@@ -13,7 +13,7 @@ import javax.persistence.*;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "ike_chat_friend")
+@Table(name = "chat_friend")
 public class Friend extends BaseEntity {
     /**
      * 归属人

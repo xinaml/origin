@@ -1,6 +1,5 @@
 package com.bjike.common.util;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ PrimitiveUtil {
             String.class,
             Integer.class,
             Long.class,
-            Char.class,
+            Character.class,
             Double.class,
             Float.class,
             Boolean.class,
@@ -96,7 +95,7 @@ PrimitiveUtil {
                         temp_arr = (Long[]) value;
                         break;
                     case "Char":
-                        temp_arr = (Char[]) value;
+                        temp_arr = (Character[]) value;
                         break;
                     case "Double":
                         temp_arr = (Double[]) value;

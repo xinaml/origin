@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "ike_shop")
+@Table(name = "shop")
 public class Shop extends BaseEntity {
     /**
      * 地址

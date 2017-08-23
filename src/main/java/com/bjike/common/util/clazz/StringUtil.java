@@ -1,4 +1,6 @@
-package com.bjike.common.util;
+package com.bjike.common.util.clazz;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,11 +21,12 @@ public class StringUtil {
     private static final String REG = "[\u4e00-\u9fa5]";
 
     public static boolean isChinese(String str) {
-
-        Pattern p = Pattern.compile(REG);
-        Matcher m = p.matcher(str);
-        if (m.find()) {
-            return true;
+        if(StringUtils.isNotBlank(str)){
+            Pattern p = Pattern.compile(REG);
+            Matcher m = p.matcher(str);
+            if (m.find()) {
+                return true;
+            }
         }
         return false;
     }

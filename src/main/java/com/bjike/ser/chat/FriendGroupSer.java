@@ -18,11 +18,19 @@ import java.util.List;
  */
 public interface FriendGroupSer extends Ser<FriendGroup, FriendGroupDTO> {
 
-
-
+    /**
+     * 添加朋友分组
+     * @param to
+     * @throws SerException
+     */
     default void add(FriendGroupTO to) throws SerException {
     }
 
+    /**
+     * 编辑朋友分组
+     * @param to
+     * @throws SerException
+     */
     default void edit(FriendGroupTO to) throws SerException {
     }
 }

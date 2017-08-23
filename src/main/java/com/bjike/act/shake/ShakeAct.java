@@ -5,18 +5,14 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.user.User;
-import com.bjike.ser.shake.IShakeSer;
-import com.bjike.vo.comment.CommentVO;
-import org.apache.commons.lang3.StringUtils;
+import com.bjike.ser.shake.ShakeSer;
+import com.bjike.ser.user.UserSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @Author: [liguiqin]
@@ -35,11 +31,14 @@ public class ShakeAct {
      * @throws Exception
      */
     @Autowired
-    private IShakeSer shakeSer;
+    private ShakeSer shakeSer;
+    @Autowired
+    private UserSer userSer;
     @GetMapping("/shake")
     public Result list(String pointX,String pointY,HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
+            String token = request.getHeader("token");
+            String userId = userSer.currentUser(token).getId();
              User vos = shakeSer.shake(userId,pointX,pointY);
             return ActResult.initialize(vos);
 

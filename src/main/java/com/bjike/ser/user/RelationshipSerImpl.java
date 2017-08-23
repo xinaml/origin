@@ -1,10 +1,13 @@
 package com.bjike.ser.user;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.dto.Restrict;
+import com.bjike.dto.user.RelationshipDTO;
+import com.bjike.dto.user.UserDTO;
 import com.bjike.entity.user.FriendChain;
 import com.bjike.entity.user.Relationship;
 import com.bjike.entity.user.User;
-import com.bjike.ser.comment.LikesSer;
+import com.bjike.ser.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +21,18 @@ import java.util.*;
  * @Copy: [com.bjike]
  */
 @Service
-public class RelationshipSerImpl implements IRelationshipSer {
+public class RelationshipSerImpl extends ServiceImpl<Relationship, RelationshipDTO> implements RelationshipSer {
     @Autowired
-    private LikesSer likesSer;
-    @Autowired
-    private IUserSer userSer;
+    private UserSer userSer;
 
     @Override
-    public Relationship search(String name, String userId) throws SerException {
+    public Relationship search(String name, String token) throws SerException {
         Relationship relationship = new Relationship();
-        User user = userSer.findById(userId);
-        String sql = "select a.tu_id ,b.avatar_image as headPath,a.nickname from ike_user a,ike_avatar b where" +
-                " a.avatar_id=b.avatar_id and ( a.nickname='%s' or tu_id='%s')";
-        sql = String.format(sql, name, name);
-        List<User> users = likesSer.findBySql(sql, User.class, new String[]{"tu_id", "headPath", "nickname"});
+        User user = userSer.currentUser(token);
+        UserDTO dto = new UserDTO();
+        dto.getConditions().add(Restrict.or("nickname", name));
+        dto.getConditions().add(Restrict.or("id", user.getId()));
+        List<User> users = userSer.findByCis(dto);
         User seek = null;
         if (null != users && users.size() > 0) {
             seek = users.get(0);
@@ -41,23 +42,23 @@ public class RelationshipSerImpl implements IRelationshipSer {
     }
 
     private void initRelationship(User seek, User user, Relationship relationship) throws SerException {
-        String sql = "select a.friend_id  from ike_friends_relationship a where a.tu_id='%s'";
+        String sql = "select a.friend_id  from friends_relationship a where a.user_id='%s'";
         String[] himFriends = null; //他的朋友
         String[] myFriends = null;//我的朋友
 
-        String exSql = String.format(sql, user.getTu_id());
-        List<Object> objects = likesSer.findBySql(exSql);
+        String exSql = String.format(sql, user.getId());
+        List<Object> objects = super.findBySql(exSql);
         if (null != objects) {
             myFriends = objects.toArray(new String[objects.size()]);
-            for(String fid: myFriends){
-                if(fid.equals(seek.getTu_id())){
+            for (String fid : myFriends) {
+                if (fid.equals(seek.getId())) {
                     relationship.setYourFriend(true);
                     return;
                 }
             }
         }
-        exSql = String.format(sql, seek.getTu_id());
-        objects = likesSer.findBySql(exSql);
+        exSql = String.format(sql, seek.getId());
+        objects = super.findBySql(exSql);
         if (null != objects) {
             himFriends = objects.toArray(new String[objects.size()]);
             for (String mid : myFriends) {
@@ -70,7 +71,7 @@ public class RelationshipSerImpl implements IRelationshipSer {
                         User u = new User();
                         u.setNickname(seek.getNickname());
                         u.setHeadPath(seek.getHeadPath());
-                        u.setTu_id(seek.getTu_id());
+                        u.setId(seek.getId());
                         myFriend.setChain(u);
                         FriendChain chain = new FriendChain();
                         chain.setFriendChain(myFriend);
@@ -84,10 +85,10 @@ public class RelationshipSerImpl implements IRelationshipSer {
         Map<String, String[]> friendsMap = new HashMap<>();
         if (relationship.getFriendChains().size() <= 5) {
             for (String my_fid : myFriends) {
-                sql = "select a.friend_id  from ike_friends_relationship a where a.tu_id='%s'";
+                sql = "select a.friend_id  from friends_relationship a where a.id='%s'";
                 //通过朋友的朋友查询
                 exSql = String.format(sql, my_fid);
-                objects = likesSer.findBySql(exSql);
+                objects = super.findBySql(exSql);
                 if (null != objects) {
                     String[] friend_friends = objects.toArray(new String[objects.size()]);
                     friendsMap.put(my_fid, friend_friends);
@@ -103,13 +104,13 @@ public class RelationshipSerImpl implements IRelationshipSer {
                                 User u = new User();
                                 u.setNickname(seek.getNickname());
                                 u.setHeadPath(seek.getHeadPath());
-                                u.setTu_id(seek.getTu_id());
+                                u.setId(seek.getId());
                                 friend_Friend.setChain(second_chain);
                                 friend_Friend.getChain().setChain(u);
                                 nameList.add(friend_Friend.getNickname());
                                 nameList.add(second_chain.getNickname());
                                 nameList.add(seek.getNickname());
-                                if(!isRepeat(nameList)){
+                                if (!isRepeat(nameList)) {
                                     FriendChain chain = new FriendChain();
                                     chain.setFriendChain(friend_Friend);
                                     List<FriendChain> chains = new ArrayList<>();
@@ -126,15 +127,15 @@ public class RelationshipSerImpl implements IRelationshipSer {
 
         }
 
-        if (relationship.getFriendChains().size() <=5) {
+        if (relationship.getFriendChains().size() <= 5) {
             for (Map.Entry<String, String[]> entry : friendsMap.entrySet()) {
                 String friend = entry.getKey();
-                String[] friend_friends =entry.getValue();
-                for(String fid: friend_friends) {
-                    sql = "select a.friend_id  from ike_friends_relationship a where a.tu_id='%s'";
+                String[] friend_friends = entry.getValue();
+                for (String fid : friend_friends) {
+                    sql = "select a.friend_id  from friends_relationship a where a.id='%s'";
                     //通过朋友的朋友查询
                     exSql = String.format(sql, fid);
-                    objects = likesSer.findBySql(exSql);
+                    objects = super.findBySql(exSql);
                     if (null != objects) {
                         String[] friend_friend_friends = objects.toArray(new String[objects.size()]);
                         for (String friend_friend : friend_friend_friends) {
@@ -148,7 +149,7 @@ public class RelationshipSerImpl implements IRelationshipSer {
                                     User u = new User();
                                     u.setNickname(seek.getNickname());
                                     u.setHeadPath(seek.getHeadPath());
-                                    u.setTu_id(seek.getTu_id());
+                                    u.setId(seek.getId());
                                     last_chain.setChain(u);
                                     User second_chain = userSer.findById(fid);
                                     User first_chain = userSer.findById(friend);
@@ -156,7 +157,7 @@ public class RelationshipSerImpl implements IRelationshipSer {
                                     nameList.add(u.getNickname());
                                     nameList.add(second_chain.getNickname());
                                     nameList.add(first_chain.getNickname());
-                                    if(!isRepeat(nameList)){
+                                    if (!isRepeat(nameList)) {
                                         second_chain.setChain(last_chain);
                                         first_chain.setChain(second_chain);
                                         FriendChain chain = new FriendChain();
@@ -178,10 +179,10 @@ public class RelationshipSerImpl implements IRelationshipSer {
     }
 
 
-    private boolean isRepeat(List<String> nameList){
+    private boolean isRepeat(List<String> nameList) {
         HashSet<String> nameSet = new HashSet<>();
         nameSet.addAll(nameList);
-      return nameList.size()!=nameSet.size();
+        return nameList.size() != nameSet.size();
     }
 
 

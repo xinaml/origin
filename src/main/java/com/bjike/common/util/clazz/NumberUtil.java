@@ -1,4 +1,4 @@
-package com.bjike.common.util;
+package com.bjike.common.util.clazz;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

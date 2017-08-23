@@ -1,6 +1,6 @@
 package com.bjike.mongo.dao;
 
-import com.bjike.common.util.GenericsUtils;
+import com.bjike.common.util.clazz.GenericsUtils;
 import com.bjike.common.util.PrimitiveUtil;
 import com.bjike.dto.BaseDTO;
 import com.bjike.dto.Condition;

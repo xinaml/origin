@@ -12,14 +12,14 @@ import com.bjike.entity.chat.GroupMember;
 import com.bjike.entity.chat.Msg;
 import com.bjike.entity.user.User;
 import com.bjike.ser.chat.mongo.MsgSer;
-import com.bjike.ser.user.IUserSer;
+import com.bjike.ser.user.UserSer;
 import com.bjike.session.ChatSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public class ChatSerImpl implements ChatSer {
     @Autowired
     private GroupMemberSer groupMember;
     @Autowired
-    private IUserSer userSer;
+    private UserSer userSer;
     @Autowired
     private MsgSer msgSer;
     @Autowired
@@ -75,7 +75,7 @@ public class ChatSerImpl implements ChatSer {
         if (null != msg.getMsgType()) {
             switch (msg.getMsgType()) {
                 case POINT:
-                    sendMsg(Arrays.asList(msg), msg.getReceiver());
+                    sendMsg(msg, msg.getReceiver());
                     break;
                 case GROUP:
                     GroupMemberDTO dto = new GroupMemberDTO();
@@ -83,7 +83,7 @@ public class ChatSerImpl implements ChatSer {
                     List<GroupMember> groupMembers = groupMember.findByCis(dto);
                     for (GroupMember member : groupMembers) {
                         msg.setReceiver(member.getUserId());
-                        sendMsg(Arrays.asList(msg), member.getUserId());
+                        sendMsg(msg, member.getUserId());
                     }
                     break;
                 case ONLINE:
@@ -110,45 +110,48 @@ public class ChatSerImpl implements ChatSer {
         dto.getConditions().add(Restrict.eq("receiver", userId));
         List<Msg> msgs = msgSer.findByCis(dto);
         if ((null != msgs)) {
-            sendMsg(msgs, userId);
-            msgSer.remove(msgs);
+            for (Msg msg : msgs) {
+                sendMsg(msg, userId);
+                msgSer.remove(msg);
+            }
+
         }
     }
 
     /**
      * 消息发送
      *
-     * @param msgs
+     * @param msg
      * @throws SerException
      */
-    private void sendMsg(List<Msg> msgs, String receiver) throws SerException {
-        if(null!=msgs && msgs.size()>0){
-            Session session = null;
-            Client client = ChatSession.get(receiver);
-            if (null != client) {
-                session = client.getSession();
-                if (session.isOpen()) {
-                    try {
-                        System.out.println("receiver:"+client.getUsername());
-                        session.getBasicRemote().sendText(JSON.toJSONString(msgs));
-                    } catch (IOException e) {
-                        throw new SerException(e.getMessage());
-                    }
-                } else {
-                    msgSer.save(msgs);
+    private void sendMsg(Msg msg, String receiver) throws SerException {
+        Session session = null;
+        Client client = ChatSession.get(receiver);
+        msg.setCreateTime(LocalDateTime.now());
+        if (null != client) {
+            session = client.getSession();
+            if (session.isOpen()) {
+                try {
+                    msg.setRead(true);
+                    session.getBasicRemote().sendText(JSON.toJSONString(msg));
+                    msgSer.save(msg);
+                } catch (IOException e) {
+                    throw new SerException(e.getMessage());
                 }
-            } else { //消息未推送
-//            off-line
-                msgSer.save(msgs);
+            } else {
+                msgSer.save(msg);
             }
+        } else { //消息未推送
+//            off-line
+            msgSer.save(msg);
         }
-
     }
 
     private void sendLineMsg(Msg msg) throws SerException {
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("userId", msg.getUserId()));
         dto.getConditions().add(Restrict.eq("applyType", 1));
+        dto.getConditions().add(Restrict.eq("read", false));
         List<Friend> friends = friendSer.findByCis(dto);
         for (Friend friend : friends) {
             Client client = ChatSession.get(friend.getUserId());

@@ -3,7 +3,7 @@ package com.bjike.common.handler;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.http.ResponseContext;
 import com.bjike.common.restful.ActResult;
-import com.bjike.common.util.StringUtil;
+import com.bjike.common.util.clazz.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +44,6 @@ public class ActionExceptionHandler extends AbstractHandlerExceptionResolver {
             }
             httpServletResponse.setStatus(EXCEPTION_STATUS);
             actResult.setCode(EXCEPTION_CODE);
-        }
-        if ("expire".equals(e.getMessage())) {
-            actResult.setCode(401);
-            actResult.setMsg("登录已过期!");
-        } else if ("notLogin".equals(e.getMessage())) {
-            actResult.setCode(403);
-            actResult.setMsg("用户未登录!");
         }
 
         ResponseContext.writeData(actResult);

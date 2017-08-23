@@ -1,5 +1,10 @@
 package com.bjike.entity.user;
 
+import com.bjike.entity.BaseEntity;
+import com.bjike.type.Status;
+import com.bjike.type.user.RelationshipType;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +15,30 @@ import java.util.List;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public class Relationship {
+@Entity
+@Table(name = "friends_relationship")
+public class Relationship extends BaseEntity {
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", columnDefinition = "VARCHAR(36) COMMENT '用户id' ", nullable = false)
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "friend_id", columnDefinition = "VARCHAR(36) COMMENT '朋友id' ", nullable = false)
+    private User friend;
+
+    @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '朋友关系' ", nullable = false, insertable = false)
+    private RelationshipType relationshipType;
+
+    @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '状态' ", nullable = false, insertable = false)
+    private Status status=Status.CONGEAL;
 
     /**
      * 关系链列表
      */
-    private List <List<FriendChain>> friendChains = new ArrayList<>();
-    private boolean yourFriend =false;
+    @Transient
+    private List<List<FriendChain>> friendChains = new ArrayList<>();
+    @Transient
+    private boolean yourFriend = false;
 
     public List<List<FriendChain>> getFriendChains() {
         return friendChains;
@@ -32,5 +54,37 @@ public class Relationship {
 
     public void setYourFriend(boolean yourFriend) {
         this.yourFriend = yourFriend;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getFriend() {
+        return friend;
+    }
+
+    public void setFriend(User friend) {
+        this.friend = friend;
+    }
+
+    public RelationshipType getRelationshipType() {
+        return relationshipType;
+    }
+
+    public void setRelationshipType(RelationshipType relationshipType) {
+        this.relationshipType = relationshipType;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

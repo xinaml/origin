@@ -5,7 +5,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.ser.user.IRelationshipSer;
+import com.bjike.ser.user.RelationshipSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 @LoginAuth
 public class RelationshipAct {
     @Autowired
-    private IRelationshipSer relationshipSer;
+    private RelationshipSer relationshipSer;
 
     @RequestMapping(value = {"/chain/{name}"})
     public Result search(@PathVariable String name, HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            return ActResult.initialize(relationshipSer.search(name, userId));
+            String token = request.getHeader("token");
+            return ActResult.initialize(relationshipSer.search(name, token));
 
         } catch (SerException e) {
             throw new ActException(e.getMessage());

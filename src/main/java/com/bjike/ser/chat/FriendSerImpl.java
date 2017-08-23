@@ -7,7 +7,7 @@ import com.bjike.dto.chat.FriendDTO;
 import com.bjike.entity.chat.Client;
 import com.bjike.entity.chat.Friend;
 import com.bjike.ser.ServiceImpl;
-import com.bjike.ser.user.IUserSer;
+import com.bjike.ser.user.UserSer;
 import com.bjike.session.ChatSession;
 import com.bjike.to.chat.FriendTO;
 import com.bjike.type.chat.ApplyType;
@@ -30,7 +30,7 @@ import java.util.List;
 public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements FriendSer {
 
     @Autowired
-    private IUserSer userSer;
+    private UserSer userSer;
 
     @Transactional
     @Override
@@ -77,10 +77,10 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     @Override
     public List<FriendGroupVO> groupInfo(String userId) throws SerException {
         String sql = " select a.id,a.name,b.counts from ike_chat_friend_group a,( " +
-                " select friend_group_id,count(friend_group_id) as counts from ike_chat_friend where apply_type=1 and user_id='" + userId + "' group by friend_group_id  )b " +
+                " select friend_group_id,count(friend_group_id) as counts from chat_friend where apply_type=1 and user_id='" + userId + "' group by friend_group_id  )b " +
                 "where a.id=b.friend_group_id" +
                 " union " +
-                " select null as id,'我的好友' as name ,count(id) as counts from ike_chat_friend where apply_type=1 and user_id='" + userId + "' " +
+                " select null as id,'我的好友' as name ,count(id) as counts from chat_friend where apply_type=1 and user_id='" + userId + "' " +
                 " group by friend_group_id";
         List<FriendGroupVO> vos = super.findBySql(sql, FriendGroupVO.class, new String[]{"id", "name", "counts"});
         return vos;
@@ -88,10 +88,9 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
     @Override
     public List<FriendVO> list(String userId) throws SerException {
-        String sql = "select b.tu_id as id,b.nickname,a.remark,c.avatar_image as headPath,a.friend_group_id as friendGroupId" +
-                " from  ike_chat_friend a " +
-                " left join  ike_user b on a.user_id = b.tu_id and a.apply_type = 1  " +
-                " left join ike_avatar c  on b.avatar_id =c.avatar_id " +
+        String sql = "select b.id ,b.nickname,a.remark,b.headPath,a.friend_group_id as friendGroupId" +
+                " from  chat_friend a " +
+                " left join  user b on a.user_id = b.id and a.apply_type = 1  " +
                 " and a.user_id='" + userId + "' " +
                 " order by a.friend_group_id desc";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId"});
@@ -147,10 +146,9 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
             coin = " and a.apply_type in(0,2)";
         }
 
-        String sql = "select * from(select b.tu_id as id,b.nickname,a.remark,c.avatar_image as headPath,a.friend_group_id as friendGroupId,a.apply_type as applyType" +
-                " from  ike_chat_friend a " +
+        String sql = "select * from(select b.id,b.nickname,a.remark,b.headPath,a.friend_group_id as friendGroupId,a.apply_type as applyType" +
+                " from  chat_friend a " +
                 " left join  ike_user b on a.user_id = b.tu_id " + coin +
-                " left join ike_avatar c  on b.avatar_id =c.avatar_id " +
                 " and a.user_id='" + userId + "' " +
                 " order by a.friend_group_id desc)a  where a.id is not null";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId","applyType"});
@@ -159,18 +157,18 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
     @Override
     public List<FriendVO> groupMember(String groupId) throws SerException {
-        String sql ="select *  from(select c.tu_id as id,c.nickname,b.remark,d.avatar_image as headPath,a.id as groupId from "+
-                "ike_chat_group a left join ike_chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='"+groupId+"'"+
-                "left join ike_user c on c.tu_id=b.user_id left join ike_avatar d on c.avatar_id=d.avatar_id)a";
+        String sql ="select *  from(select c.id ,c.nickname,b.remark,c.headPath,a.id as groupId from "+
+                "chat_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='"+groupId+"'"+
+                "left join user c on c.id=b.user_id )a";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "groupId"});
         return friendVOS;
     }
 
     @Override
     public List<FriendVO> friendGroup(String id) throws SerException {
-        String sql="select *  from(select c.nickname,b.remark,d.avatar_image as headPath,a.id as friendGroupId from "+
-                " ike_chat_friend_group a left join ike_chat_friend b on a.user_id=b.user_id and b.apply_type=1 "+
-                " left join ike_user c on c.tu_id=b.user_id left join ike_avatar d on c.avatar_id=d.avatar_id)a where a.friendGroupId" +
+        String sql="select *  from(select c.nickname,b.remark,c headPath,a.id as friendGroupId from "+
+                " chat_friend_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 "+
+                " left join ike_user c on c.id=b.user_id )a where a.friendGroupId" +
                 "='"+id+"'";
         return super.findBySql(sql, FriendVO.class,new String[]{"nickname","remark","headPath","friendGroupId"});
 

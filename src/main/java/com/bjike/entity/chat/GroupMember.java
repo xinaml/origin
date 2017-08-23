@@ -13,7 +13,7 @@ import javax.persistence.*;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "ike_chat_group_member")
+@Table(name = "chat_group_member")
 public class GroupMember extends BaseEntity {
     /**
      * 归属群

@@ -29,15 +29,15 @@ import java.time.LocalDateTime;
         )
 })
 @Entity
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseEntity implements Serializable{
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class BaseEntity implements Serializable {
     /**
      * 数据行id
      */
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", nullable = false,length = 36,updatable = false,insertable = false)
+    @Column(name = "id", nullable = false, length = 36, updatable = false, insertable = false)
     protected String id;
 
 
@@ -45,14 +45,14 @@ public abstract class BaseEntity implements Serializable{
      * 创建时间
      */
 
-    @Column(name = "createTime",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'", insertable = false,nullable = false)
-    protected LocalDateTime createTime;
+    @Column(name = "createTime", columnDefinition = "DATETIME  COMMENT '创建时间'", nullable = false)
+    protected LocalDateTime createTime = LocalDateTime.now();
 
     /**
      * 更新时间
      */
-    @Column(name = "modifyTime",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间' ",insertable = false,nullable = false)
-    protected LocalDateTime modifyTime ;
+    @Column(name = "modifyTime", columnDefinition = "DATETIME COMMENT '更新时间' ", nullable = false)
+    protected LocalDateTime modifyTime = LocalDateTime.now();
 
 
     public String getId() {

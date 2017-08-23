@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @Copy: [com.bjike]
  */
 @Entity
-@Table(name = "ike_comment_likes")
+@Table(name = "comment_likes")
 public class Likes extends BaseEntity {
     /**
      * 点评

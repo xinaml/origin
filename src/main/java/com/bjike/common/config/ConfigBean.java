@@ -3,7 +3,7 @@ package com.bjike.common.config;
 import com.bjike.common.interceptor.login.LoginIntercept;
 import com.bjike.chat.ChatServer;
 import com.bjike.ser.chat.ChatSer;
-import com.bjike.ser.user.IUserSer;
+import com.bjike.ser.user.UserSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigBean {
     @Autowired
-    private IUserSer userSer;
+    private UserSer userSer;
     @Autowired
     private ChatSer chatSer;
 

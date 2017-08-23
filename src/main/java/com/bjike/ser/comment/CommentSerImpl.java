@@ -1,7 +1,7 @@
 package com.bjike.ser.comment;
 
 import com.bjike.common.exception.SerException;
-import com.bjike.common.util.NumberUtil;
+import com.bjike.common.util.clazz.NumberUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.comment.CommentDTO;
@@ -14,7 +14,7 @@ import com.bjike.entity.comment.Picture;
 import com.bjike.entity.comment.Shop;
 import com.bjike.entity.user.User;
 import com.bjike.ser.ServiceImpl;
-import com.bjike.ser.user.IUserSer;
+import com.bjike.ser.user.UserSer;
 import com.bjike.to.comment.CommentTO;
 import com.bjike.type.comment.ScoreType;
 import com.bjike.vo.comment.CommentDetailsVO;
@@ -44,14 +44,14 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     @Autowired
     private LikesSer likesSer;
     @Autowired
-    private IUserSer userSer;
+    private UserSer userSer;
 
     @Override
     public Comment add(CommentTO to, List<File> files) throws SerException {
         try {
             Comment comment = BeanCopy.copyProperties(to, Comment.class);
             User user = userSer.findById(to.getUserId());
-            comment.setUserId(user.getTu_id());
+            comment.setUserId(user.getId());
             ShopDTO shopDTO = new ShopDTO();
             shopDTO.getConditions().add(Restrict.eq("pointId", to.getPointId()));
             Shop shop = shopSer.findOne(shopDTO);
@@ -149,7 +149,7 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
     @Override
     public ScoreType score(String poindId) throws SerException {
-        String sql = "select  IFNULL(avg(score_type),0) from ike_comment a,ike_shop b where a.shop_id=b.id and b.point_id='" + poindId + "'";
+        String sql = "select  IFNULL(avg(score_type),0) from comment a,shop b where a.shop_id=b.id and b.point_id='" + poindId + "'";
         List<Object> objects = super.findBySql(sql);
         Double rs = Double.valueOf(String.valueOf(objects.get(0)));
         int code = (int) NumberUtil.decimal(rs);

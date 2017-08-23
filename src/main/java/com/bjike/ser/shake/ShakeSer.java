@@ -10,7 +10,7 @@ import com.bjike.entity.user.User;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-public interface IShakeSer {
+public interface ShakeSer {
     /**
      * 摇一摇
      *
