@@ -1,7 +1,12 @@
 package com.bjike.to.user;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
 import com.bjike.to.BaseTO;
 import com.bjike.type.user.RelationshipType;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: [liguiqin]
@@ -13,16 +18,23 @@ import com.bjike.type.user.RelationshipType;
 public class RecommendTO extends BaseTO {
 
     //真实姓名
+    @NotBlank(message = "真实姓名不能为空!", groups = {ADD.class, EDIT.class})
     private String realName;
 
     //联系号码
+    @NotBlank(message = "联系号码不能为空!", groups = {ADD.class, EDIT.class})
     private String telephone;
 
     //兴趣爱好
+    @NotBlank(message = "兴趣不能为空!", groups = {ADD.class, EDIT.class})
     private String interest;
+
     //地址
+    @NotBlank(message = "地址不能为空!", groups = {ADD.class, EDIT.class})
+
     private String address;
     //关系
+    @NotNull(message = "地址不能关系!", groups = {ADD.class, EDIT.class})
     private RelationshipType relationshipType;
 
 
@@ -31,26 +43,38 @@ public class RecommendTO extends BaseTO {
 
     //性格
     private String disposition;
+
     //籍贯
     private String nativePlace;
+
     //毕业学校
     private String school;
+
     //学历
+    @NotBlank(message = "学历不能关系!", groups = {ADD.class, EDIT.class})
     private String education;
+
     //公司
     private String company;
+
     //职位
     private String job;
+
     //qq
     private String qq;
+
     //邮箱
     private String email;
+
     //微信
     private String weChat;
+
     //父亲姓名
     private String fatherName;
+
     //母亲姓名
     private String motherName;
+
     //婚姻状况
     private Boolean marriage;
 

@@ -36,7 +36,7 @@ public class AuthCodeAct {
      * @des 登录找回密码注册, 验证码图片流
      * @version v1
      */
-    @GetMapping("v1/generate/code")
+    @GetMapping("generate/code")
     public void generateCode(HttpServletRequest request, HttpServletResponse response) throws ActException {
         response.setContentType("image/jpeg");
         response.setDateHeader("expries", -1);

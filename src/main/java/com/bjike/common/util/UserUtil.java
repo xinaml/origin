@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 用户工具
  * @Author: [liguiqin]
  * @Date: [2017-08-24 09:20]
  * @Description: [ ]
@@ -23,10 +24,22 @@ public class UserUtil {
 
     public static RedisClient redis;
 
+    /**
+     * 获取当前用户
+     *
+     * @return
+     * @throws SerException
+     */
     public static User currentUser(String token) throws SerException {
         return getUser(token);
     }
 
+    /**
+     * 获取当前用户
+     *
+     * @return
+     * @throws SerException
+     */
     public static User currentUser() throws SerException {
         HttpServletRequest request = getRequest();
         String token = request.getHeader(UserCommon.TOKEN);
@@ -34,6 +47,12 @@ public class UserUtil {
 
     }
 
+    /**
+     * 获取当前用户id
+     *
+     * @return
+     * @throws SerException
+     */
     public static String currentUserID() throws SerException {
         return currentUser().getId();
     }

@@ -53,7 +53,8 @@ public class Recommend extends BaseEntity {
 
     @Column(columnDefinition = "VARCHAR(100) COMMENT '公司' ")
     private String company;
-  @Column(columnDefinition = "VARCHAR(100) COMMENT '职位' ")
+
+   @Column(columnDefinition = "VARCHAR(100) COMMENT '职位' ")
     private String job;
 
     @Column(columnDefinition = "VARCHAR(30) COMMENT '父亲姓名' ")

@@ -14,7 +14,10 @@ import com.bjike.to.user.RecommendTO;
  * @Copy: [com.bjike]
  */
 public interface RecommendSer extends Ser<Recommend,RecommendDTO> {
-    default void add(RecommendTO to) throws SerException{
-
+    default String add(RecommendTO to) throws SerException{
+        return null;
+    }
+    default Boolean validate(String code) throws SerException{
+        return null;
     }
 }
