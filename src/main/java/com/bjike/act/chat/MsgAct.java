@@ -7,11 +7,7 @@ import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Msg;
-import com.bjike.ser.chat.FriendSer;
-import com.bjike.ser.chat.GroupSer;
 import com.bjike.ser.chat.mongo.MsgSer;
-import com.bjike.to.chat.GroupTO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,19 +32,18 @@ public class MsgAct {
 
     /**
      * Point 单独聊天消息记录
+     *
      * @param request
      * @return
      * @throws ActException
      */
     @RequestMapping(value = "/point/{reviver}", method = RequestMethod.GET)
     @ResponseBody
-    public Result pointMsg(MsgDTO dto,@PathVariable String reviver, HttpServletRequest request) throws ActException {
+    public Result pointMsg(MsgDTO dto, @PathVariable String reviver, HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
             dto.setReviver(reviver);
-            dto.setUserId(userId);
             List<Msg> msgs = msgSer.pointMsg(dto);
-            return new ActResult("add success");
+            return ActResult.initialize(msgs);
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -56,19 +51,17 @@ public class MsgAct {
 
     /**
      * Group 群聊天消息记录
-     * @param request
+     *
      * @return
      * @throws ActException
      */
     @RequestMapping(value = "/group/{groupId}", method = RequestMethod.GET)
     @ResponseBody
-    public Result groupMsg(MsgDTO dto,@PathVariable String groupId, HttpServletRequest request) throws ActException {
+    public Result groupMsg(MsgDTO dto, @PathVariable String groupId) throws ActException {
         try {
-            String userId = request.getHeader("userId");
             dto.setGroupId(groupId);
-            dto.setUserId(userId);
             List<Msg> msgs = msgSer.groupMsg(dto);
-            return  ActResult.initialize(msgs);
+            return ActResult.initialize(msgs);
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }

@@ -32,14 +32,11 @@ public class ShakeAct {
      */
     @Autowired
     private ShakeSer shakeSer;
-    @Autowired
-    private UserSer userSer;
+
     @GetMapping("/shake")
     public Result list(String pointX,String pointY,HttpServletRequest request) throws ActException {
         try {
-            String token = request.getHeader("token");
-            String userId = userSer.currentUser(token).getId();
-             User vos = shakeSer.shake(userId,pointX,pointY);
+             User vos = shakeSer.shake(pointX,pointY);
             return ActResult.initialize(vos);
 
         } catch (SerException e) {

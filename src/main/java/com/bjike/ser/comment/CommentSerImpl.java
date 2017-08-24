@@ -1,6 +1,7 @@
 package com.bjike.ser.comment;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.clazz.NumberUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
@@ -114,7 +115,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
     @Transactional
     @Override
-    public void like(String commentId, String userId) throws SerException {
+    public void like(String commentId) throws SerException {
+        String userId= UserUtil.currentUserID();
         Comment comment = super.findById(commentId);
         if (null != comment) {
             comment.setLikes(comment.getLikes() != null ? (comment.getLikes() + 1) : 1);
@@ -133,7 +135,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     }
 
     @Override
-    public void cancelLike(String commentId, String userId) throws SerException {
+    public void cancelLike(String commentId ) throws SerException {
+        String userId = UserUtil.currentUserID();
         Comment comment = super.findById(commentId);
         LikesDTO dto = new LikesDTO();
         dto.getConditions().add(Restrict.eq("userId", userId));
@@ -172,13 +175,13 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     }
 
     @Override
-    public CommentDetailsVO details(String commentId, String userId) throws SerException {
-        User user = userSer.findById(userId);
+    public CommentDetailsVO details(String commentId  ) throws SerException {
+        User user= UserUtil.currentUser();
         Comment comment = super.findById(commentId);
         if (null != comment) {
             CommentDetailsVO vo = BeanCopy.copyProperties(comment, CommentDetailsVO.class);
             vo.setImages(getImages(commentId));
-            vo.setAlreadyLikes(alreadyLike(userId));
+            vo.setAlreadyLikes(alreadyLike(user.getId()));
             vo.setHeadPath(user.getHeadPath());
             vo.setNickname(user.getNickname());
             return vo;

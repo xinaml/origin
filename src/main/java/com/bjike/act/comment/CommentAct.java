@@ -7,11 +7,13 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
+import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.common.util.date.DateUtil;
 import com.bjike.common.util.file.FileUtil;
 import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.comment.Comment;
+import com.bjike.entity.user.User;
 import com.bjike.ser.comment.CommentSer;
 import com.bjike.ser.user.UserSer;
 import com.bjike.to.comment.CommentTO;
@@ -40,8 +42,6 @@ import java.util.List;
 public class CommentAct {
     @Autowired
     private CommentSer commentSer;
-    @Autowired
-    private UserSer userSer;
 
     /**
      * 添加点评
@@ -54,7 +54,7 @@ public class CommentAct {
     @PostMapping("/add")
     public Result add(@Validated(ADD.class) CommentTO to, BindingResult result, HttpServletRequest request) throws ActException {
         try {
-            String userId = currentUserId(request);
+            String userId =  UserUtil.currentUserID();
             List<File> files = FileUtil.save(request, getCommentPath(userId));
             Comment comment = commentSer.add(to, files);
             CommentVO vo = BeanCopy.copyProperties(comment, CommentVO.class);
@@ -73,9 +73,9 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/list")
-    public Result list(CommentDTO dto, HttpServletRequest request) throws ActException {
+    public Result list(CommentDTO dto) throws ActException {
         try {
-            String userId = currentUserId(request);
+            String userId = UserUtil.currentUserID();
             dto.setUserId(userId);
             List<CommentVO> vos = commentSer.list(dto);
             return ActResult.initialize(vos);
@@ -108,10 +108,9 @@ public class CommentAct {
      * @throws Exception
      */
     @PutMapping("/like/{commentId}")
-    public Result like(@PathVariable String commentId, HttpServletRequest request) throws ActException {
+    public Result like(@PathVariable String commentId) throws ActException {
         try {
-            String userId = currentUserId(request);
-            commentSer.like(commentId, userId);
+            commentSer.like(commentId);
             return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -126,10 +125,9 @@ public class CommentAct {
      * @throws Exception
      */
     @PutMapping("/cancel/like/{commentId}")
-    public Result notLike(@PathVariable String commentId, HttpServletRequest request) throws ActException {
+    public Result notLike(@PathVariable String commentId) throws ActException {
         try {
-            String userId = currentUserId(request);
-            commentSer.cancelLike(commentId, userId);
+            commentSer.cancelLike(commentId);
             return new ActResult("success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -182,7 +180,7 @@ public class CommentAct {
     @PostMapping("/upload/img/{commentId}")
     public Result uploadImg(@PathVariable String commentId, HttpServletRequest request) throws ActException {
         try {
-            String userId = currentUserId(request);
+            String userId = UserUtil.currentUserID();
             List<File> files = FileUtil.save(request, getCommentPath(userId));
             commentSer.uploadImg(commentId, files);
             return new ActResult("success");
@@ -200,10 +198,9 @@ public class CommentAct {
      * @throws Exception
      */
     @GetMapping("/details/{commentId}")
-    public Result details(@PathVariable String commentId, HttpServletRequest request) throws ActException {
+    public Result details(@PathVariable String commentId) throws ActException {
         try {
-            String userId = currentUserId(request);
-            CommentDetailsVO vo = commentSer.details(commentId, userId);
+            CommentDetailsVO vo = commentSer.details(commentId);
             return ActResult.initialize(vo);
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -221,16 +218,6 @@ public class CommentAct {
         return "/" + userId + "/comment/" + DateUtil.dateToString(LocalDate.now()).replaceAll("-", "");
     }
 
-    /**
-     * 获取当前用户id
-     *
-     * @param request
-     * @return
-     * @throws SerException
-     */
-    private String currentUserId(HttpServletRequest request) throws SerException {
-        String token = request.getHeader(UserCommon.TOKEN);
-        return userSer.currentUser(token).getId();
-    }
+
 
 }

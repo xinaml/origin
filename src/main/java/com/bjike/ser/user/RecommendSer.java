@@ -1,8 +1,10 @@
 package com.bjike.ser.user;
 
+import com.bjike.common.exception.SerException;
 import com.bjike.dto.user.RecommendDTO;
 import com.bjike.entity.user.Recommend;
 import com.bjike.ser.Ser;
+import com.bjike.to.user.RecommendTO;
 
 /**
  * @Author: [liguiqin]
@@ -12,4 +14,7 @@ import com.bjike.ser.Ser;
  * @Copy: [com.bjike]
  */
 public interface RecommendSer extends Ser<Recommend,RecommendDTO> {
+    default void add(RecommendTO to) throws SerException{
+
+    }
 }

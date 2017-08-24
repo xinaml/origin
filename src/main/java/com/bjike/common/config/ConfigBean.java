@@ -2,6 +2,8 @@ package com.bjike.common.config;
 
 import com.bjike.common.interceptor.login.LoginIntercept;
 import com.bjike.chat.ChatServer;
+import com.bjike.common.util.UserUtil;
+import com.bjike.redis.client.RedisClient;
 import com.bjike.ser.chat.ChatSer;
 import com.bjike.ser.user.UserSer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ public class ConfigBean {
     private UserSer userSer;
     @Autowired
     private ChatSer chatSer;
+    @Autowired
+    private RedisClient redis;
 
     @Bean
     public Object init() {
         LoginIntercept.userSer = userSer;
         ChatServer.chatSer = chatSer;
+        UserUtil.redis = redis;
         return new Object();
     }
 }

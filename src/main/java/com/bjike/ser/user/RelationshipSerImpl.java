@@ -1,6 +1,7 @@
 package com.bjike.ser.user;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.UserUtil;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.user.RelationshipDTO;
 import com.bjike.dto.user.UserDTO;
@@ -26,9 +27,9 @@ public class RelationshipSerImpl extends ServiceImpl<Relationship, RelationshipD
     private UserSer userSer;
 
     @Override
-    public Relationship search(String name, String token) throws SerException {
+    public Relationship search(String name) throws SerException {
         Relationship relationship = new Relationship();
-        User user = userSer.currentUser(token);
+        User user = UserUtil.currentUser();
         UserDTO dto = new UserDTO();
         dto.getConditions().add(Restrict.or("nickname", name));
         dto.getConditions().add(Restrict.or("id", user.getId()));

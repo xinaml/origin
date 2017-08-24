@@ -1,9 +1,11 @@
 package com.bjike.ser.chat.mongo;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.UserUtil;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.chat.MsgDTO;
 import com.bjike.entity.chat.Msg;
+import com.bjike.entity.user.User;
 import com.bjike.mongo.service.MoGoSerImpl;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +22,16 @@ import java.util.List;
 public class MsgSerImpl extends MoGoSerImpl<Msg, MsgDTO> implements MsgSer {
     @Override
     public List<Msg> pointMsg(MsgDTO dto) throws SerException {
-        dto.getConditions().add(Restrict.eq("senderId", dto.getUserId()));
+        String userId = UserUtil.currentUserID();
+        dto.getConditions().add(Restrict.eq("senderId", userId));
         dto.getConditions().add(Restrict.eq("receiver", dto.getReviver()));
         return super.findByCis(dto);
     }
 
     @Override
     public List<Msg> groupMsg(MsgDTO dto) throws SerException {
-        dto.getConditions().add(Restrict.eq("senderId", dto.getUserId()));
+        String userId = UserUtil.currentUserID();
+        dto.getConditions().add(Restrict.eq("senderId",userId));
         dto.getConditions().add(Restrict.eq("group", dto.getGroupId()));
         return super.findByCis(dto);
     }

@@ -18,11 +18,10 @@ public interface RelationshipSer extends Ser<Relationship,RelationshipDTO> {
     /**
      * 关系链
      * @param name
-     * @param token
      * @return
      * @throws SerException
      */
-    default Relationship search(String name, String token)throws SerException{
+    default Relationship search(String name)throws SerException{
         return null;
     }
 }

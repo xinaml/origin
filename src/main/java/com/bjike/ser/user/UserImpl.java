@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bjike.common.constant.UserCommon;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.util.PasswordHash;
+import com.bjike.common.util.UserUtil;
 import com.bjike.dao.user.UserRep;
 import com.bjike.dto.user.UserDTO;
 import com.bjike.entity.user.User;
@@ -33,10 +34,6 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         return userRep.findByUsername(username);
     }
 
-    @Override
-    public User currentUser(String token) throws SerException {
-        return currentLoginUser(token);
-    }
 
     @Override
     public User findByPhone(String phone) throws SerException {
@@ -45,7 +42,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
 
     @Override
     public Boolean isLogin(String token) throws SerException {
-        return null != currentLoginUser(token);
+        return null != UserUtil.currentUser(token);
     }
 
     @Override
@@ -79,24 +76,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         return false;
     }
 
-    private User currentLoginUser(String token) throws SerException {
-        if (null != token) {
-            User loginUser = UserSession.get(token);
-            if (null != loginUser) {
-                return loginUser;
-            } else { //redis 获取
-                String loginUser_str = redis.getMap(UserCommon.LOGIN_USER, token.toString());
-                if (StringUtils.isNotBlank(loginUser_str)) {
-                    loginUser = JSON.parseObject(loginUser_str, User.class);
-                    UserSession.put(token.toString(), loginUser); //设置到session
-                    return loginUser;
-                }
-            }
-            throw new SerException("登录已失效!");
-        } else {
-            throw new SerException("用户未登录!");
-        }
-    }
+
 }
 
 

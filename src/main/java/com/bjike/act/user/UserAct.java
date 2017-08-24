@@ -6,6 +6,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.util.PasswordHash;
+import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.entity.user.User;
 import com.bjike.ser.user.UserSer;
@@ -32,16 +33,14 @@ public class UserAct {
     /**
      * 当前用户信息
      *
-     * @param request
      * @return
      * @throws ActException
      */
     @LoginAuth
     @GetMapping("/info")
-    public ActResult userInfo(HttpServletRequest request) throws ActException {
+    public ActResult userInfo() throws ActException {
         try {
-            String token = request.getHeader(UserCommon.TOKEN);
-            User user = userSer.currentUser(token);
+            User user =UserUtil.currentUser();
             return ActResult.initialize(BeanCopy.copyProperties(user, UserVO.class));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -80,11 +79,11 @@ public class UserAct {
      */
     @LoginAuth
     @PutMapping("/editPwd")
-    public ActResult editPwd(String oldPassword, String password, String rePassword, HttpServletRequest request) throws ActException {
+    public ActResult editPwd(String oldPassword, String password, String rePassword) throws ActException {
         try {
             if (password.equals(rePassword)) {
                 boolean pass = false;
-                User user = userSer.currentUser(request.getHeader(UserCommon.TOKEN));
+                User user =UserUtil.currentUser();
                 try {
                     pass = PasswordHash.validatePassword(oldPassword, user.getPassword());
                 } catch (Exception e) {

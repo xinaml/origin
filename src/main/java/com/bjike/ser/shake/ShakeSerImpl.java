@@ -1,6 +1,7 @@
 package com.bjike.ser.shake;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.UserUtil;
 import com.bjike.entity.user.User;
 import com.bjike.ser.user.UserSer;
 import com.bjike.session.ShareSession;
@@ -24,7 +25,8 @@ public class ShakeSerImpl implements ShakeSer {
     private UserSer userSer;
 
     @Override
-    public User shake(String userId, String pointX, String pointY) throws SerException {
+    public User shake( String pointX, String pointY) throws SerException {
+        String userId = UserUtil.currentUserID();
         String now = StringUtils.substring(LocalDateTime.now().toString(), 0, -2);
         User user = ShareSession.get(now);
         if (null == user) {

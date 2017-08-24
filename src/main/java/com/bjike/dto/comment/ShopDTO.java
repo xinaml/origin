@@ -17,7 +17,6 @@ public class ShopDTO extends BaseDTO{
      */
     private Double range=0.5;
 
-    private String userId;
 
 
     public Double getRange() {
@@ -44,11 +43,4 @@ public class ShopDTO extends BaseDTO{
         this.pointY = pointY;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

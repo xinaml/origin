@@ -40,39 +40,35 @@ public interface FriendSer extends Ser<Friend, FriendDTO> {
     /**
      * 删除好友
      * @param friendId
-     * @param userId
      * @throws SerException
      */
-    default void delete(String friendId, String userId) throws SerException {
+    default void delete(String friendId) throws SerException {
     }
 
     /**
      * 更改备注
      * @param friendId
      * @param remark
-     * @param userId
      * @throws SerException
      */
-    default void editRemark(String friendId, String remark, String userId) throws SerException {
+    default void editRemark(String friendId, String remark) throws SerException {
 
     }
 
     /**
      * 同意好友申请
      * @param friendId
-     * @param userId
      * @throws SerException
      */
-    default void agree(String friendId, String userId) throws SerException {
+    default void agree(String friendId) throws SerException {
     }
 
     /**
      * 拒绝好友申请
      * @param friendId
-     * @param userId
      * @throws SerException
      */
-    default void refuse(String friendId, String userId) throws SerException {
+    default void refuse(String friendId) throws SerException {
     }
     /**
      * 用户所有朋友列表

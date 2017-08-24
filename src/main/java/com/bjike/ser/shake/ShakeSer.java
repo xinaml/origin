@@ -14,13 +14,12 @@ public interface ShakeSer {
     /**
      * 摇一摇
      *
-     * @param userId
      * @param pointX
      * @param pointY
      * @return
      * @throws SerException
      */
-    default User shake(String userId, String pointX, String pointY) throws SerException {
+    default User shake( String pointX, String pointY) throws SerException {
         return null;
     }
 }

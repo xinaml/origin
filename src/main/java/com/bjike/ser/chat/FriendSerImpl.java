@@ -1,6 +1,7 @@
 package com.bjike.ser.chat;
 
 import com.bjike.common.exception.SerException;
+import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.chat.FriendDTO;
@@ -35,10 +36,10 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     @Transactional
     @Override
     public void add(FriendTO to) throws SerException {
-
+        String userId = UserUtil.currentUserID();
         if (null != userSer.findById(to.getFriendId())) {
             FriendDTO dto = new FriendDTO();
-            dto.getConditions().add(Restrict.eq("userId", to.getUserId()));
+            dto.getConditions().add(Restrict.eq("userId", userId));
             dto.getConditions().add(Restrict.eq("friendId", to.getFriendId()));
             Friend friend = super.findOne(dto);
             if (null == friend) {
@@ -55,7 +56,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
     @Transactional
     @Override
-    public void delete(String friendId, String userId) throws SerException {
+    public void delete(String friendId) throws SerException {
+        String userId = UserUtil.currentUserID();
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("friendId", friendId));
         Friend friend = super.findOne(dto);
@@ -102,7 +104,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     }
 
     @Override
-    public void editRemark(String friendId, String remark, String userId) throws SerException {
+    public void editRemark(String friendId, String remark) throws SerException {
+        String userId = UserUtil.currentUserID();
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("userId", userId));
         dto.getConditions().add(Restrict.eq("friendId", friendId));
@@ -114,7 +117,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     }
 
     @Override
-    public void agree(String friendId, String userId) throws SerException {
+    public void agree(String friendId) throws SerException {
+        String userId = UserUtil.currentUserID();
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("userId", userId));
         dto.getConditions().add(Restrict.eq("friendId", friendId));
@@ -126,7 +130,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     }
 
     @Override
-    public void refuse(String friendId, String userId) throws SerException {
+    public void refuse(String friendId) throws SerException {
+        String userId = UserUtil.currentUserID();
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("userId", userId));
         dto.getConditions().add(Restrict.eq("friendId", friendId));
@@ -151,14 +156,14 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
                 " left join  ike_user b on a.user_id = b.tu_id " + coin +
                 " and a.user_id='" + userId + "' " +
                 " order by a.friend_group_id desc)a  where a.id is not null";
-        List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId","applyType"});
+        List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId", "applyType"});
         return friendVOS;
     }
 
     @Override
     public List<FriendVO> groupMember(String groupId) throws SerException {
-        String sql ="select *  from(select c.id ,c.nickname,b.remark,c.headPath,a.id as groupId from "+
-                "chat_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='"+groupId+"'"+
+        String sql = "select *  from(select c.id ,c.nickname,b.remark,c.headPath,a.id as groupId from " +
+                "chat_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='" + groupId + "'" +
                 "left join user c on c.id=b.user_id )a";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "groupId"});
         return friendVOS;
@@ -166,11 +171,11 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
     @Override
     public List<FriendVO> friendGroup(String id) throws SerException {
-        String sql="select *  from(select c.nickname,b.remark,c headPath,a.id as friendGroupId from "+
-                " chat_friend_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 "+
+        String sql = "select *  from(select c.nickname,b.remark,c headPath,a.id as friendGroupId from " +
+                " chat_friend_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 " +
                 " left join ike_user c on c.id=b.user_id )a where a.friendGroupId" +
-                "='"+id+"'";
-        return super.findBySql(sql, FriendVO.class,new String[]{"nickname","remark","headPath","friendGroupId"});
+                "='" + id + "'";
+        return super.findBySql(sql, FriendVO.class, new String[]{"nickname", "remark", "headPath", "friendGroupId"});
 
     }
 }

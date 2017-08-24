@@ -58,20 +58,18 @@ public interface CommentSer extends Ser<Comment, CommentDTO> {
      * 点赞
      *
      * @param commentId
-     * @param userId
      * @throws SerException
      */
-    default void like(String commentId, String userId) throws SerException {
+    default void like(String commentId ) throws SerException {
     }
 
     /**
      * 取消点赞
      *
      * @param commentId
-     * @param userId
      * @throws SerException
      */
-    default void cancelLike(String commentId, String userId) throws SerException {
+    default void cancelLike(String commentId ) throws SerException {
     }
 
     /**
@@ -99,11 +97,10 @@ public interface CommentSer extends Ser<Comment, CommentDTO> {
      * 评论详情
      *
      * @param commentId
-     * @param userId
      * @return
      * @throws SerException
      */
-    default CommentDetailsVO details(String commentId, String userId) throws SerException {
+    default CommentDetailsVO details(String commentId ) throws SerException {
         return null;
     }
 

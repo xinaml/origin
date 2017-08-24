@@ -5,6 +5,8 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
+import com.bjike.common.util.UserUtil;
+import com.bjike.entity.user.User;
 import com.bjike.ser.chat.FriendSer;
 import com.bjike.to.chat.FriendTO;
 import com.bjike.type.chat.ApplyType;
@@ -39,9 +41,9 @@ public class FriendAct {
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public Result list(HttpServletRequest request) throws ActException {
+    public Result list() throws ActException {
         try {
-            String userId = request.getHeader("userId");
+            String userId = UserUtil.currentUserID();
             return ActResult.initialize(friendSer.list(userId));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -58,9 +60,9 @@ public class FriendAct {
      */
     @RequestMapping(value = "/type/list", method = RequestMethod.GET)
     @ResponseBody
-    public Result findByApplyType(ApplyType type, HttpServletRequest request) throws ActException {
+    public Result findByApplyType(ApplyType type) throws ActException {
         try {
-            String userId = request.getHeader("userId");
+            String userId = UserUtil.currentUserID();
             return ActResult.initialize(friendSer.findByApplyType(type, userId));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -77,9 +79,8 @@ public class FriendAct {
      */
     @RequestMapping(value = "/friendGroup/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Result friendGroup(@PathVariable String id, HttpServletRequest request) throws ActException {
+    public Result friendGroup(@PathVariable String id) throws ActException {
         try {
-            String userId = request.getHeader("userId");
             return ActResult.initialize(friendSer.friendGroup(id));
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -94,9 +95,9 @@ public class FriendAct {
      */
     @RequestMapping(value = "friendGroup/info", method = RequestMethod.GET)
     @ResponseBody
-    public Result groupInfo(HttpServletRequest request) throws ActException {
+    public Result groupInfo() throws ActException {
         try {
-            String userId = request.getHeader("userId");
+            String userId = UserUtil.currentUserID();
             List<FriendGroupVO> groupVOS = friendSer.groupInfo(userId);
             return ActResult.initialize(groupVOS);
         } catch (SerException e) {
@@ -114,10 +115,8 @@ public class FriendAct {
      */
     @RequestMapping(value = "apply", method = RequestMethod.POST)
     @ResponseBody
-    public Result apply(FriendTO to, HttpServletRequest request) throws ActException {
+    public Result apply(FriendTO to) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            to.setUserId(userId);
             friendSer.add(to);
             return new ActResult("apply success");
         } catch (SerException e) {
@@ -137,8 +136,7 @@ public class FriendAct {
     @ResponseBody
     public Result agree(String friendId, HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            friendSer.agree(friendId, userId);
+            friendSer.agree(friendId);
             return new ActResult("agree success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -155,10 +153,9 @@ public class FriendAct {
      */
     @RequestMapping(value = "refuse", method = RequestMethod.PUT)
     @ResponseBody
-    public Result refuse(String friendId, HttpServletRequest request) throws ActException {
+    public Result refuse(String friendId) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            friendSer.refuse(friendId, userId);
+            friendSer.refuse(friendId);
             return new ActResult("refuse success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -178,8 +175,7 @@ public class FriendAct {
     @ResponseBody
     public Result delete(@PathVariable String friendId, HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            friendSer.delete(friendId, userId);
+            friendSer.delete(friendId);
             return new ActResult("delete success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -198,8 +194,7 @@ public class FriendAct {
     @ResponseBody
     public Result editNickname(String nickname, String friendId, HttpServletRequest request) throws ActException {
         try {
-            String userId = request.getHeader("userId");
-            friendSer.editRemark(friendId, nickname, userId);
+            friendSer.editRemark(friendId, nickname);
             return new ActResult("remark success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());

@@ -28,10 +28,9 @@ public class RelationshipAct {
     private RelationshipSer relationshipSer;
 
     @RequestMapping(value = {"/chain/{name}"})
-    public Result search(@PathVariable String name, HttpServletRequest request) throws ActException {
+    public Result search(@PathVariable String name) throws ActException {
         try {
-            String token = request.getHeader("token");
-            return ActResult.initialize(relationshipSer.search(name, token));
+            return ActResult.initialize(relationshipSer.search(name));
 
         } catch (SerException e) {
             throw new ActException(e.getMessage());

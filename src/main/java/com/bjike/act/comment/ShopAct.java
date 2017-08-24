@@ -40,11 +40,8 @@ public class ShopAct {
      * @throws Exception
      */
     @GetMapping("/nearby")
-    public Result nearby(ShopDTO dto, HttpServletRequest request) throws ActException {
+    public Result nearby(ShopDTO dto) throws ActException {
         try {
-            if(StringUtils.isBlank(dto.getUserId())){
-                dto.setUserId(request.getHeader("userId"));
-            }
             return ActResult.initialize(shopSer.nearby(dto));
         } catch (SerException e) {
             throw new ActException(e.getMessage());

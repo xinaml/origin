@@ -3,7 +3,9 @@ package com.bjike.act.recommend;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
+import com.bjike.ser.user.RecommendSer;
 import com.bjike.to.user.RecommendTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(name = "recommend")
 public class RecommendAct {
+    @Autowired
+    private RecommendSer recommendSer;
     /**
      * 添加推荐并生成推荐码
      *

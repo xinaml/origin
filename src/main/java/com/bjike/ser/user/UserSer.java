@@ -25,17 +25,6 @@ public interface UserSer extends Ser<User, UserDTO> {
     }
 
     /**
-     * 当前登录用户
-     *
-     * @param token
-     * @return
-     * @throws SerException
-     */
-    default User currentUser(String token) throws SerException {
-        return null;
-    }
-
-    /**
      * 通过用户名查询用户
      *
      * @param username
