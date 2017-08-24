@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,6 +51,9 @@ public class FileAct {
                             .outputFormat(suffix);
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     fileBuilder.toOutputStream(os);
+                    response.setContentType("text/html; charset=UTF-8");
+                    response.setContentType("image/jpeg");
+
                     FileUtil.writeOutFile(response, os.toByteArray(), fileName);
                 } catch (IOException e) {
                     throw new SerException("缩略图获取错误");

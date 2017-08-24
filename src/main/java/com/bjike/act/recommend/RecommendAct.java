@@ -81,6 +81,7 @@ public class RecommendAct {
      * @return
      * @throws ActException
      */
+    @LoginAuth
     @GetMapping("/validate/{code}")
     public ActResult validate(@PathVariable String code) throws ActException {
         try {
