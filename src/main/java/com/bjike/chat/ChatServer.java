@@ -7,6 +7,7 @@ import com.bjike.entity.chat.Msg;
 import com.bjike.ser.chat.ChatSer;
 import com.bjike.session.ChatSession;
 import com.bjike.type.chat.MsgType;
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -25,6 +26,10 @@ import java.util.Map;
 @ServerEndpoint(value = "/chat/{userId}", configurator = GetHttpSessionConfigurator.class)
 @Component
 public class ChatServer {
+   @Constructor
+   public  void init(){
+       System.out.println();
+    }
     private static final int MAX_SIZE = 1024 * 10;
     private static final int TIMEOUT = 60 * 10 * 10;
     public static ChatSer chatSer;

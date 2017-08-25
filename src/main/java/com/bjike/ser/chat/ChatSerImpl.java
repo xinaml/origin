@@ -59,11 +59,16 @@ public class ChatSerImpl implements ChatSer {
             } else {
                 client = new Client();
                 User sender = userSer.findById(userId);
-                client.setUsername(sender.getNickname());
-                client.setHeadPath(sender.getHeadPath());
-                client.setSession(session);
-                ChatSession.put(userId, client);
-                exists = false;
+                if(null!=sender){
+                    client.setUsername(sender.getNickname());
+                    client.setHeadPath(sender.getHeadPath());
+                    client.setSession(session);
+                    ChatSession.put(userId, client);
+                    exists = false;
+                }else {
+                    throw  new SerException("找不到该用户!");
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,6 +137,7 @@ public class ChatSerImpl implements ChatSer {
             session = client.getSession();
             if (session.isOpen()) {
                 try {
+                    System.out.println(JSON.toJSONString(msg));
                     msg.setRead(true);
                     session.getBasicRemote().sendText(JSON.toJSONString(msg));
                     msgSer.save(msg);
@@ -151,7 +157,6 @@ public class ChatSerImpl implements ChatSer {
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("userId", msg.getUserId()));
         dto.getConditions().add(Restrict.eq("applyType", 1));
-        dto.getConditions().add(Restrict.eq("read", false));
         List<Friend> friends = friendSer.findByCis(dto);
         for (Friend friend : friends) {
             Client client = ChatSession.get(friend.getUserId());

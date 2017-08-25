@@ -33,7 +33,9 @@ public class LoginIntercept extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURI();
-        if (url.equals("/")) return true;
+
+        if (url.equals("/chatRoom")||url.equals("/")) return true;
+
         if (!handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             return validateLogin(request, response);
         }

@@ -80,9 +80,7 @@ public class ChatSession {
     public static Client get(String userId) {
         try {
             if (StringUtils.isNotBlank(userId)) {
-
                 return CHAT_SESSION.get(userId);
-
             }
             throw TOKEN_NOT_NULL;
         } catch (Exception e) {

@@ -20,7 +20,6 @@ import java.util.Map;
  *
  * @author liguiqin
  */
-@ServerEndpoint(value = "/chat/audio/{sender}/with/{reviver}", configurator = GetHttpSessionConfigurator.class)
 public class AudioServer {
 
     /**
@@ -28,7 +27,6 @@ public class AudioServer {
      * @param sender  请求语音人
      * @param reviver //语音接收人
      */
-    @OnOpen
     public void OnOpen(Session session, @PathParam("sender") String sender, @PathParam("reviver") String reviver) throws SerException {
         Client client = ChatSession.get(reviver);
         if (null == null || !client.getSession().isOpen()) {
@@ -44,7 +42,6 @@ public class AudioServer {
         }
     }
 
-    @OnClose
     public void quit(Session session, @PathParam("sender") String sender) throws SerException {
         try {
             session.close();
@@ -78,7 +75,6 @@ public class AudioServer {
 
     }
 
-    @OnError
     public void error(Session session, Throwable t) throws Throwable {
         session.close();
     }

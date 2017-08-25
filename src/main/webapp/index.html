@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test webSockets</title>
+    <title>Test webSockets...</title>
 </head>
 <body>
 <div id="messages" style="overflow-y:auto; overflow-x:auto;
@@ -19,9 +19,9 @@
 
 
 <script type="text/javascript">
-    var socketUrl = "ws" + '://'+"192.168.0.59"+'/chat/13160877272';
+    var socketUrl = "ws" + '://'+"192.168.0.59:8080"+'/chat/ebe94643-ec67-4e63-b8da-13bc61d69401';
     var webSocket = new WebSocket(socketUrl);
-
+    console.info(socketUrl)
     webSocket.onerror = function (event) {
         onError(event)
     };
@@ -54,9 +54,9 @@
     function sendMsg() {
         var content =$('#inp').val();
         var chatMsg = new Object();
-        chatMsg.senderId = "13160877272";
+        chatMsg.senderId = "ebe94643-ec67-4e63-b8da-13bc61d69401";
         chatMsg.senderName = "11xinaml";
-        chatMsg.receiver = "13818209557";
+        chatMsg.receiver = "91dd657c-03bc-418e-8276-4a5d56ffe238";
         chatMsg.msgType = 'POINT'
         chatMsg.content = content;
         webSocket.send(JSON.stringify(chatMsg));
