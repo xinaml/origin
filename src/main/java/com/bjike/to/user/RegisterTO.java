@@ -1,7 +1,5 @@
 package com.bjike.to.user;
 
-import com.bjike.common.aspect.ADD;
-import com.bjike.common.aspect.EDIT;
 import com.bjike.type.user.LoginType;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,16 +11,27 @@ import org.hibernate.validator.constraints.NotBlank;
  * @Copy: [com.bjike]
  */
 public class RegisterTO {
-    @NotBlank(message = "手机号不能为空!", groups = {ADD.class, EDIT.class})
+    public interface INVITE { //邀请注册
+
+    }
+
+    public interface PHONE { //普通手机注册
+
+    }
+
+    @NotBlank(message = "手机号不能为空!", groups = {RegisterTO.INVITE.class, RegisterTO.PHONE.class})
     private String phone;
-    @NotBlank(message = "验证码不能为空!", groups = {ADD.class})
+    @NotBlank(message = "验证码不能为空!", groups = {RegisterTO.PHONE.class})
     private String authCode;
     private String ip;
+    @NotBlank(message = "昵称不能为空!", groups = {RegisterTO.PHONE.class})
     private String nickname;
-    @NotBlank(message = "确认密码不能为空!", groups = {ADD.class, EDIT.class})
+    @NotBlank(message = "确认密码不能为空!", groups = {RegisterTO.INVITE.class, RegisterTO.PHONE.class})
     private String rePassword;
-    @NotBlank(message = "密码不能为空!", groups = {ADD.class})
+    @NotBlank(message = "密码不能为空!", groups = {RegisterTO.INVITE.class, RegisterTO.PHONE.class})
     private String password;
+    @NotBlank(message = "邀请码不能为空!", groups = {RegisterTO.INVITE.class})
+    private String invite;
     private LoginType loginType;
     private String sid;
 
@@ -89,4 +98,13 @@ public class RegisterTO {
     public void setSid(String sid) {
         this.sid = sid;
     }
+
+    public String getInvite() {
+        return invite;
+    }
+
+    public void setInvite(String invite) {
+        this.invite = invite;
+    }
+
 }

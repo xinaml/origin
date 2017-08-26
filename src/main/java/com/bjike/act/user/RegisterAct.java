@@ -8,6 +8,7 @@ import com.bjike.common.restful.Result;
 import com.bjike.common.util.IpUtil;
 import com.bjike.common.util.regex.CheckMobile;
 import com.bjike.ser.user.RegisterSer;
+import com.bjike.session.AuthCodeSession;
 import com.bjike.to.user.RegisterTO;
 import com.bjike.type.user.LoginType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class RegisterAct {
     private RegisterSer registerSer;
 
     /**
+     * 手机号注册
      * 注册,注册之前请先获取到注册验证码:AuthCodeAct
      * @param to
      * @param rs
@@ -39,7 +41,7 @@ public class RegisterAct {
      * @throws ActException
      */
     @PostMapping("/register")
-    public Result register(@Validated({ADD.class}) RegisterTO to, BindingResult rs, HttpServletRequest request) throws ActException {
+    public Result register(@Validated({RegisterTO.PHONE.class}) RegisterTO to, BindingResult rs, HttpServletRequest request) throws ActException {
         try {
             String userAgent = request.getHeader("USER-AGENT").toLowerCase();
             LoginType type = LoginType.PC;
@@ -55,4 +57,32 @@ public class RegisterAct {
             throw new ActException(e.getMessage());
         }
     }
+
+    /**
+     * 邀请码注册
+     * @param to
+     * @param rs
+     * @param request
+     * @return
+     * @throws ActException
+     */
+    @PostMapping("/invite/register")
+    public Result inviteReg(@Validated({RegisterTO.INVITE.class}) RegisterTO to, BindingResult rs, HttpServletRequest request) throws ActException {
+        try {
+            to.setIp(IpUtil.getIp(request));
+            to.setSid(request.getSession().getId());
+            String userAgent = request.getHeader("USER-AGENT").toLowerCase();
+            LoginType type = LoginType.PC;
+            if (CheckMobile.check(userAgent)) { //判断是否为移动端访问
+                type = LoginType.MOBILE;
+            }
+            to.setLoginType(type);
+            String token = registerSer.register(to);
+            return ActResult.initialize(token);
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+
 }

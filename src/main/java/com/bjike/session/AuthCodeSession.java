@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 注册邀请码session
  * 注册验证码session
  *
  * @Author: [liguiqin]
@@ -26,7 +27,7 @@ public final class AuthCodeSession {
     private static final RuntimeException SID_NOT_NULL = new RuntimeException("sid不能为空");
 
     private static final LoadingCache<String, String> SID_SESSION = CacheBuilder.newBuilder()
-            .expireAfterWrite(  5, TimeUnit.MINUTES)
+            .expireAfterWrite(5, TimeUnit.MINUTES)
             .maximumSize(1000)
             .removalListener(new RemovalListener<String, String>() {
                 @Override
